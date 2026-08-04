@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { GradientButton } from "@/components/GradientButton";
 import { SecondaryButton } from "@/components/SecondaryButton";
 import { Icon, type IconName } from "@/components/Icon";
@@ -26,23 +25,18 @@ export function Hero() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="container hero__shell">
         <div className="hero__content">
-          <Image
-            src="/brand/logo-catamarca-global.webp?v=3"
-            alt="Catamarca Global"
-            width={560}
-            height={234}
-            className="hero__brand-lockup"
-            priority
-            unoptimized
-          />
-          <h1 id="hero-title" className="sr-only">
-            Catamarca Global
+          <p className="eyebrow">Catamarca Global</p>
+          <h1 id="hero-title">
+            Cooperación internacional desde Catamarca
           </h1>
-          <p className="hero__tagline">Conectamos Catamarca con el mundo</p>
+          <p className="hero__tagline">
+            Formación, redes y participación joven para conectar la provincia con el
+            mundo.
+          </p>
           <p className="hero__lead">
-            Somos una asociación civil integrada por jóvenes profesionales y
-            estudiantes universitarios comprometidos con la internacionalización,
-            la cooperación, la formación y la integración regional.
+            Somos una asociación civil integrada por jóvenes profesionales y estudiantes
+            universitarios comprometidos con la internacionalización, la formación y la
+            integración regional.
           </p>
           <div className="button-row">
             <GradientButton href="/modelo-onu">Conocé el Modelo ONU</GradientButton>
@@ -61,16 +55,6 @@ export function Hero() {
               </span>
             </div>
           ))}
-        </div>
-        <div className="hero__seal" aria-hidden>
-          <Image
-            src="/brand/logo-symbol.webp?v=3"
-            alt=""
-            width={180}
-            height={180}
-            priority
-            unoptimized
-          />
         </div>
       </div>
     </section>
