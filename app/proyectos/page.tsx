@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 export const metadata: Metadata = {
   title: "Proyectos",
   description:
-    "Proyectos de Catamarca Global con foco en Modelo ONU, formación académica, cooperación, internacionalización de oportunidades y liderazgo juvenil.",
+    "Proyecto vigente de Catamarca Global: Modelo de Asamblea General de Naciones Unidas.",
   alternates: {
     canonical: "/proyectos",
   },
@@ -19,15 +19,15 @@ export default function ProjectsPage() {
       <PageHero
         eyebrow="Proyectos"
         current="Proyectos"
-        title="Iniciativas para participar, capacitarse y generar impacto"
-        text="El primer proyecto institucional es el Modelo de Asamblea General de Naciones Unidas, una experiencia educativa para mirar el mundo desde Catamarca y construir soluciones colectivas."
+        title="Nuestro proyecto vigente"
+        text="Actualmente, el proyecto activo de Catamarca Global es el Modelo de Asamblea General de Naciones Unidas."
       />
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Explorar"
-            title="Filtrar por temática"
-            intro="La estructura queda preparada para sumar nuevas líneas de formación, cooperación, integración regional e internacionalización de oportunidades."
+            eyebrow="Modelo ONU"
+            title="Una experiencia para mirar el mundo desde Catamarca"
+            intro="El Modelo ONU concentra la agenda vigente de formación, debate, investigación, negociación y construcción de consensos."
           />
           <ProjectExplorer />
         </div>
