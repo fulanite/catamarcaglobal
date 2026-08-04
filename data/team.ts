@@ -10,7 +10,7 @@ export const boardMembers: TeamMember[] = [
   {
     name: "María Estela Argerich",
     role: "Presidenta",
-    area: "Comisión Directiva Provisoria",
+    area: "Comisión Directiva",
     summary:
       "Representación institucional, dirección estratégica, coordinación general y generación de alianzas.",
     href: "/equipo#maria-estela-argerich",
@@ -18,7 +18,7 @@ export const boardMembers: TeamMember[] = [
   {
     name: "Gabriel Molina",
     role: "Vicepresidente",
-    area: "Comisión Directiva Provisoria",
+    area: "Comisión Directiva",
     summary:
       "Acompañamiento estratégico a Presidencia, seguimiento de proyectos y vinculación con actores productivos y organismos estratégicos.",
     href: "/equipo#gabriel-molina",
@@ -26,7 +26,7 @@ export const boardMembers: TeamMember[] = [
   {
     name: "Yuliana Herrera",
     role: "Secretaria General",
-    area: "Comisión Directiva Provisoria",
+    area: "Comisión Directiva",
     summary:
       "Coordinación administrativa, seguimiento de documentación oficial, reuniones, actas y comunicación interna.",
     href: "/equipo#yuliana-herrera",
@@ -34,7 +34,7 @@ export const boardMembers: TeamMember[] = [
   {
     name: "Ana Laura Ahumada",
     role: "Tesorera",
-    area: "Comisión Directiva Provisoria",
+    area: "Comisión Directiva",
     summary:
       "Administración financiera y contable, presupuestos, balances, rendiciones y seguimiento económico de proyectos.",
     href: "/equipo#ana-laura-ahumada",

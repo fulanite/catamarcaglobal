@@ -10,7 +10,7 @@ import { futureTeams as futureTeamNames } from "@/data/site";
 export const metadata: Metadata = {
   title: "Equipo",
   description:
-    "Comisión Directiva provisoria, vocalías estratégicas y estructura organizacional de Catamarca Global.",
+    "Comisión Directiva, vocalías estratégicas y estructura organizacional de Catamarca Global.",
   alternates: {
     canonical: "/equipo",
   },
@@ -23,13 +23,13 @@ export default function TeamPage() {
         eyebrow="Equipo"
         current="Equipo"
         title="Una estructura institucional clara, humana y escalable"
-        text="La Comisión Directiva provisoria y las vocalías estratégicas se presentan con nombres y cargos extraídos del organigrama institucional."
+        text="La Comisión Directiva y las vocalías estratégicas se presentan con nombres y cargos extraídos del organigrama institucional."
       />
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Comisión Directiva"
-            title="Conducción institucional provisoria"
+            title="Conducción institucional"
             intro="Las fotos personales se incorporarán cuando existan imágenes reales autorizadas."
           />
           <div className="grid grid-4">
