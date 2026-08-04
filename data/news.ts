@@ -9,13 +9,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
   {
-    title: "Convocatoria institucional en preparación",
-    category: "Contenido editable",
-    date: "Fecha editable",
+    title: "Modelo ONU: capacitaciones y simulación",
+    category: "Modelo ONU",
+    date: "8/9, 15/10, 9 y 10/11",
     summary:
-      "Espacio reservado para publicar convocatorias, oportunidades o actividades cuando el equipo confirme el contenido público.",
-    href: "/novedades#convocatoria-institucional-en-preparacion",
-    editable: true,
+      "El programa prevé presentación, sorteo de países, investigación, capacitaciones en escuelas, carpeta diplomática, práctica de debate y realización del Modelo ONU.",
+    href: "/modelo-onu",
+    editable: false,
   },
   {
     title: "Agenda de formación internacional",

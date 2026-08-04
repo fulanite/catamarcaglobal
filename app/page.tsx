@@ -33,14 +33,14 @@ export default function Home() {
           <div>
             <SectionHeading
               eyebrow="Quiénes somos"
-              title="Una Catamarca con mirada global"
-              intro="Catamarca Global es una asociación civil orientada a conectar talento local con oportunidades globales a través de formación, cooperación, debate, intercambio cultural e innovación."
+              title="Jóvenes que conectan Catamarca con oportunidades"
+              intro="Catamarca Global es una asociación civil integrada por jóvenes profesionales y estudiantes universitarios comprometidos con la internacionalización, la cooperación, la formación y la integración regional."
             />
             <p>
-              Su propósito combina juventudes, instituciones y sectores productivos con
-              una agenda de cooperación, educación e internacionalización territorial.
-              La organización busca proyectar identidad catamarqueña con una mirada
-              cercana, profesional e inclusiva.
+              Nace para responder a una necesidad concreta: muchas oportunidades
+              existen pero no llegan a todos, las instituciones suelen trabajar de
+              manera aislada y los jóvenes necesitan espacios para participar,
+              capacitarse y generar impacto.
             </p>
             <div className="button-row">
               <GradientButton href="/quienes-somos">Conocer la asociación</GradientButton>
@@ -95,11 +95,11 @@ export default function Home() {
 
       <section className="section section--soft">
         <div className="container">
-          <SectionHeading
-            eyebrow="Proyectos"
-            title="Líneas de acción preparadas para crecer"
-            intro="El sistema permite cargar nuevas iniciativas y estados cuando existan datos públicos confirmados."
-          />
+            <SectionHeading
+              eyebrow="Proyectos"
+              title="Nuestro primer proyecto ya tiene una hoja de ruta"
+              intro="El Modelo de Asamblea General de Naciones Unidas abre una agenda de formación para mirar el mundo desde Catamarca, debatir problemáticas internacionales y construir soluciones colectivas."
+            />
           <div className="grid grid-3">
             {projects.slice(0, 6).map((project) => (
               <ProjectCard key={project.slug} project={project} />
@@ -114,9 +114,9 @@ export default function Home() {
             <p className="eyebrow eyebrow--light">Modelo ONU</p>
             <h2>Diplomacia juvenil para aprender haciendo</h2>
             <p>
-              El Modelo de Asamblea General de Naciones Unidas propone una simulación
-              académica donde estudiantes investigan, representan delegaciones, debaten
-              y construyen consensos con reglas institucionales.
+              El programa permitirá a estudiantes secundarios desarrollar investigación,
+              oratoria, pensamiento crítico, negociación, trabajo en equipo y
+              construcción de consensos en articulación con instituciones locales.
             </p>
           </div>
           <div className="model-band__actions">
@@ -130,7 +130,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Equipo"
             title="Comisión Directiva y vocalías"
-            intro="La estructura institucional inicial surge del organigrama disponible y se presenta sin fotos personales hasta contar con imágenes reales."
+            intro="La organización articula perfiles jóvenes, profesionales y universitarios para sostener formación, cooperación, innovación e integración regional."
           />
           <div className="grid grid-3">
             {teamMembers.slice(0, 6).map((member) => (
@@ -146,7 +146,7 @@ export default function Home() {
       <section className="impact-section" aria-labelledby="impact-title">
         <div className="container">
           <p className="eyebrow eyebrow--light">Proyección</p>
-          <h2 id="impact-title">Impacto preparado para datos reales</h2>
+          <h2 id="impact-title">Qué buscamos construir</h2>
           <div className="impact-grid">
             {impactConcepts.map((concept) => (
               <div key={concept}>
@@ -163,7 +163,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Novedades"
             title="Convocatorias, actividades y oportunidades"
-            intro="Las tarjetas iniciales están marcadas como editables para no presentar noticias ficticias como reales."
+            intro="La agenda inicial prioriza el Modelo ONU y deja preparados otros espacios para futuras actividades institucionales."
           />
           <div className="grid grid-3">
             {newsItems.map((item) => (

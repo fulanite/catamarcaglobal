@@ -21,19 +21,19 @@ export default function IdentityPage() {
       <PageHero
         eyebrow="Identidad institucional"
         current="Misión, visión y valores"
-        title="Los principios que orientan la proyección global"
-        text="La identidad de Catamarca Global combina formación, cooperación, inclusión, transparencia e innovación para impulsar oportunidades desde el territorio."
+        title="Pensar global y actuar local"
+        text="La identidad de Catamarca Global se apoya en conectar personas, instituciones y oportunidades para que Catamarca participe con voz propia en agendas globales."
       />
       <section className="section">
         <div className="container grid grid-2">
           <article className="card identity-card">
             <p className="tag">Misión</p>
-            <h2>Formar líderes con mirada internacional</h2>
+            <h2>Conectar oportunidades para el desarrollo provincial</h2>
             <p>{mission}</p>
           </article>
           <article className="card identity-card">
             <p className="tag">Visión</p>
-            <h2>Conectar Catamarca con oportunidades globales</h2>
+            <h2>Jóvenes protagonistas de una Catamarca global</h2>
             <p>{vision}</p>
           </article>
         </div>
@@ -42,7 +42,7 @@ export default function IdentityPage() {
         <div className="container">
           <SectionHeading
             eyebrow="Valores"
-            title="Seis criterios para construir confianza"
+            title="Criterios para construir redes y comunidad"
             intro="Cada valor se traduce en decisiones de comunicación, gestión institucional y diseño de programas."
             align="center"
           />

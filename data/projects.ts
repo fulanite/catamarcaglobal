@@ -29,12 +29,12 @@ export const projects: Project[] = [
     title: "Modelo de Asamblea General de Naciones Unidas",
     slug: "modelo-onu",
     category: "Diplomacia juvenil",
-    themes: ["Formación", "Modelo ONU", "ODS"],
-    status: "En preparación",
+    themes: ["Formación", "Modelo ONU", "ODS", "Derechos Humanos"],
+    status: "Próximamente",
     summary:
-      "Simulación académica para que estudiantes asuman roles diplomáticos, debatan problemáticas internacionales y construyan resoluciones mediante diálogo y consenso.",
+      "Experiencia educativa para estudiantes secundarios orientada a investigación, oratoria, pensamiento crítico, negociación, trabajo en equipo y construcción de consensos.",
     details:
-      "El programa combina capacitación, investigación, oratoria, negociación y ciudadanía global, con acompañamiento académico y trabajo colaborativo.",
+      "El programa trabaja sobre migraciones forzadas y protección internacional de personas desplazadas, con capacitaciones, carpeta diplomática, discurso inicial, debate, negociación y resolución.",
     icon: "Landmark",
     href: "/modelo-onu",
   },

@@ -21,36 +21,36 @@ export default function AboutPage() {
       <PageHero
         eyebrow="Quiénes somos"
         current="Quiénes somos"
-        title="Una asociación civil para proyectar Catamarca hacia el mundo"
-        text="Catamarca Global conecta formación internacional, cooperación, innovación y liderazgo joven con una mirada territorial, inclusiva y profesional."
+        title="Una asociación civil joven para conectar oportunidades"
+        text="Catamarca Global reúne jóvenes profesionales y estudiantes universitarios comprometidos con la internacionalización, la cooperación, la formación y la integración regional."
       />
       <section className="section">
         <div className="container editorial-layout">
           <div>
             <SectionHeading
               eyebrow="Presentación"
-              title="Formación, cooperación y participación joven"
+              title="Catamarca tiene potencial y sus jóvenes deben ser protagonistas"
             />
             <p>
-              Catamarca Global nace como una organización orientada a crear espacios
-              de capacitación, debate, intercambio cultural y vinculación estratégica.
-              Su trabajo busca acercar herramientas internacionales a jóvenes,
-              instituciones y sectores productivos de la provincia.
+              La asociación nace para construir un espacio que conecte personas,
+              instituciones y oportunidades para el desarrollo de la provincia. Su
+              mirada combina formación académica, redes de cooperación,
+              internacionalización de oportunidades, participación ciudadana, trabajo
+              colaborativo y liderazgo juvenil.
             </p>
             <p>
-              La primera reunión documentada fue el 9 de mayo de 2026, con una agenda
-              inicial centrada en formación internacional, integración regional,
-              cooperación, participación juvenil, innovación y organización
-              institucional.
+              El punto de partida es claro: muchas oportunidades existen pero no llegan
+              a todos, las instituciones muchas veces trabajan de manera aislada y los
+              jóvenes necesitan espacios para participar, capacitarse y generar impacto.
             </p>
           </div>
           <aside className="editorial-aside">
-            <h2>Enfoque institucional</h2>
+            <h2>Ejes de compromiso</h2>
             <ul className="check-list">
-              <li>Identidad catamarqueña con proyección global.</li>
-              <li>Participación juvenil y aprendizaje continuo.</li>
-              <li>Articulación entre sector público, académico, privado y sociedad civil.</li>
-              <li>Cooperación, innovación y derechos humanos como ejes transversales.</li>
+              <li>Internacionalización.</li>
+              <li>Cooperación.</li>
+              <li>Formación.</li>
+              <li>Integración regional.</li>
             </ul>
           </aside>
         </div>
@@ -73,7 +73,7 @@ export default function AboutPage() {
         <div className="container">
           <SectionHeading
             eyebrow="Objetivos"
-            title="Una agenda institucional amplia y escalable"
+            title="De la necesidad detectada a la acción"
             intro={generalObjective}
           />
           <div className="objective-grid">

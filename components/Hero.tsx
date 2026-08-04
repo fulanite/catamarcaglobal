@@ -13,8 +13,8 @@ export function Hero() {
             Conectamos <span>Catamarca</span> con el <span>mundo</span>
           </h1>
           <p>
-            Impulsamos oportunidades de formación, cooperación, intercambio e
-            integración para proyectar el talento catamarqueño a nivel global.
+            Pensamos global, actuamos local: construimos redes y comunidad para
+            promover diálogo, formación e intercambio desde Catamarca.
           </p>
           <div className="button-row">
             <GradientButton href="/proyectos">Conocé nuestros proyectos</GradientButton>
@@ -42,8 +42,8 @@ export function Hero() {
           </div>
           <div className="hero-visual__panel">
             <Icon name="Network" />
-            <strong>Redes para cooperar</strong>
-            <span>Formación, territorio e internacionalización</span>
+            <strong>Personas, instituciones y oportunidades</strong>
+            <span>Un espacio para participar, capacitarse y generar impacto</span>
           </div>
         </div>
       </div>
