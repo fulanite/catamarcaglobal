@@ -341,6 +341,39 @@ export default function ModelOnuPage() {
         </div>
       </section>
 
+      <section className="section" id="material-de-apoyo">
+        <div className="container editorial-layout">
+          <div>
+            <SectionHeading
+              eyebrow="Material de apoyo"
+              title="Material descargable para el Modelo ONU"
+              intro="El documento reúne contenidos de consulta para acompañar la preparación de las delegaciones antes de la simulación."
+            />
+            <p>
+              Está pensado como recurso de trabajo para estudiantes y docentes durante
+              la investigación, las capacitaciones, la elaboración de la carpeta
+              diplomática y la práctica de debate.
+            </p>
+          </div>
+          <aside className="editorial-aside">
+            <span className="icon-badge">
+              <Icon name="Download" />
+            </span>
+            <h2>Material Modelo ONU</h2>
+            <p>Guía en PDF para consultar y usar durante el recorrido del programa.</p>
+            <div className="button-row">
+              <a
+                className="btn btn-primary"
+                href="/materiales/material-modelo-onu.pdf"
+                download="Material Modelo ONU.pdf"
+              >
+                Descargar PDF
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container editorial-layout">
           <div>
