@@ -32,13 +32,6 @@ const whyItems = [
   },
 ] as const satisfies Array<{ title: string; text: string; icon: IconName }>;
 
-const reflectionItems = [
-  "En relaciones internacionales no todos los países piensan igual ante un mismo problema.",
-  "Cada Estado tiene historia, intereses, alianzas, necesidades y límites propios.",
-  "Las delegaciones no debaten solo desde lo que creen personalmente.",
-  "El desafío es comprender una posición distinta de la propia y representarla con respeto y argumentos.",
-];
-
 const beforeModel = [
   "Historia y características generales del país.",
   "Sistema político y situación económica y social.",
@@ -224,41 +217,6 @@ export default function ModelOnuPage() {
       </section>
 
       <section className="section">
-        <div className="container editorial-layout">
-          <div>
-            <SectionHeading
-              eyebrow="Dinámica introductoria"
-              title="El mundo toma posición"
-              intro="La actividad inicial muestra que una misma pregunta puede tener respuestas distintas según la perspectiva desde la que se mire."
-            />
-            <div className="grid grid-3">
-              {[
-                ["De acuerdo", "Quienes acuerdan dan un paso hacia la derecha."],
-                ["Dudas o depende", "Quienes tienen dudas permanecen en el centro."],
-                ["En desacuerdo", "Quienes no acuerdan dan un paso hacia la izquierda."],
-              ].map(([title, text]) => (
-                <article className="card value-card" key={title}>
-                  <span className="icon-badge">
-                    <Icon name="UsersRound" />
-                  </span>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-          <aside className="editorial-aside">
-            <h2>Reflexión de la dinámica</h2>
-            <ul className="check-list">
-              {reflectionItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </aside>
-        </div>
-      </section>
-
-      <section className="section section--soft">
         <div className="container">
           <SectionHeading
             eyebrow="Tema de debate"
