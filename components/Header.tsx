@@ -29,7 +29,7 @@ export function Header() {
       <div className="container site-header__inner">
         <Link className="brand-link" href="/" aria-label="Catamarca Global - Inicio">
           <Image
-            src="/brand/logo-catamarca-global.webp?v=2"
+            src="/brand/logo-catamarca-global.webp?v=3"
             alt="Catamarca Global"
             width={240}
             height={100}

@@ -11,7 +11,7 @@ export function Footer() {
       <div className="container site-footer__grid">
         <div>
           <Image
-            src="/brand/logo-catamarca-global.webp?v=2"
+            src="/brand/logo-catamarca-global.webp?v=3"
             alt="Catamarca Global"
             width={260}
             height={108}

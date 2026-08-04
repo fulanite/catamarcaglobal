@@ -28,7 +28,7 @@ export function Hero() {
         <div className="hero__content">
           <p className="eyebrow">Asociación civil</p>
           <Image
-            src="/brand/logo-catamarca-global.webp?v=2"
+            src="/brand/logo-catamarca-global.webp?v=3"
             alt="Catamarca Global"
             width={560}
             height={234}
@@ -65,7 +65,7 @@ export function Hero() {
         </div>
         <div className="hero__seal" aria-hidden>
           <Image
-            src="/brand/logo-symbol.webp?v=2"
+            src="/brand/logo-symbol.webp?v=3"
             alt=""
             width={180}
             height={180}

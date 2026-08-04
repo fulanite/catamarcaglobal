@@ -8,7 +8,7 @@ export function TeamCard({ member }: { member: TeamMember }) {
     <article className="card team-card" id={member.href.split("#")[1]}>
       <div className="team-card__avatar">
         <Image
-          src="/brand/logo-symbol.webp?v=2"
+          src="/brand/logo-symbol.webp?v=3"
           alt=""
           width={112}
           height={112}
