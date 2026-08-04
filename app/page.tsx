@@ -162,8 +162,8 @@ export default function Home() {
         <div className="container">
           <SectionHeading
             eyebrow="Novedades"
-            title="Convocatorias, actividades y oportunidades"
-            intro="La agenda inicial prioriza el Modelo ONU y deja preparados otros espacios para futuras actividades institucionales."
+            title="Actualidad del Modelo ONU"
+            intro="La novedad vigente acompaña el recorrido de capacitaciones, investigación y simulación diplomática del Modelo ONU."
           />
           <div className="grid grid-3">
             {newsItems.map((item) => (

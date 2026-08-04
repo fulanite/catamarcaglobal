@@ -17,22 +17,4 @@ export const newsItems: NewsItem[] = [
     href: "/modelo-onu",
     editable: false,
   },
-  {
-    title: "Agenda de formación internacional",
-    category: "Contenido editable",
-    date: "Fecha editable",
-    summary:
-      "Tarjeta modelo para difundir charlas, capacitaciones o conversatorios sin inventar fechas, sedes ni participantes.",
-    href: "/novedades#agenda-de-formacion-internacional",
-    editable: true,
-  },
-  {
-    title: "Oportunidades para voluntariado",
-    category: "Contenido editable",
-    date: "Fecha editable",
-    summary:
-      "Bloque preparado para anunciar llamados a voluntariado por área, modalidad, dedicación y formulario de postulación.",
-    href: "/novedades#oportunidades-para-voluntariado",
-    editable: true,
-  },
 ];

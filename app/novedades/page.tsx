@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { CTASection } from "@/components/CTASection";
-import { EmptyState } from "@/components/EmptyState";
 import { NewsCard } from "@/components/NewsCard";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -9,7 +8,7 @@ import { newsItems } from "@/data/news";
 export const metadata: Metadata = {
   title: "Novedades",
   description:
-    "Noticias, convocatorias, actividades y oportunidades de Catamarca Global, con contenidos editables pendientes de publicación.",
+    "Novedades del Modelo ONU de Catamarca Global, con capacitaciones y simulación para estudiantes secundarios.",
   alternates: {
     canonical: "/novedades",
   },
@@ -21,24 +20,21 @@ export default function NewsPage() {
       <PageHero
         eyebrow="Novedades"
         current="Novedades"
-        title="Un espacio preparado para comunicar oportunidades reales"
-        text="Las noticias iniciales están marcadas como editables para evitar publicar actividades, fechas o resultados que todavía no estén confirmados."
+        title="Actualidad del Modelo ONU"
+        text="La novedad vigente de Catamarca Global acompaña el recorrido de capacitaciones, investigación y simulación diplomática del Modelo ONU."
       />
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Contenido editable"
-            title="Tarjetas modelo para próximas publicaciones"
+            eyebrow="Modelo ONU"
+            title="Capacitaciones y simulación"
+            intro="Por ahora, el Modelo ONU concentra las novedades institucionales publicadas."
           />
           <div className="grid grid-3">
             {newsItems.map((item) => (
               <NewsCard key={item.title} item={item} />
             ))}
           </div>
-          <EmptyState
-            title="Noticias reales en preparación"
-            text="Cuando existan convocatorias, actividades o alianzas confirmadas, este bloque puede reemplazarse por publicaciones definitivas."
-          />
         </div>
       </section>
       <CTASection />
