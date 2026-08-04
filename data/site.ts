@@ -10,7 +10,14 @@ export const siteConfig = {
     emailLabel: "Correo institucional editable",
     email: "",
     location: "Catamarca, Argentina",
-    socialLabel: "Redes sociales editables",
+    socialLabel: "Redes sociales",
+    socials: [
+      {
+        label: "Instagram",
+        handle: "@catamarca.global",
+        href: "https://www.instagram.com/catamarca.global/",
+      },
+    ],
   },
 };
 

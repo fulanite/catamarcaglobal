@@ -79,6 +79,7 @@ export default function RootLayout({
               url: siteConfig.url,
               logo: `${siteConfig.url}/brand/logo-catamarca-global.png`,
               description: siteConfig.description,
+              sameAs: siteConfig.contact.socials.map((social) => social.href),
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Catamarca",

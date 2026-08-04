@@ -9,7 +9,7 @@ const faqs = [
   {
     question: "¿Cómo puedo contactar al equipo?",
     answer:
-      "El correo institucional y las redes están marcados como editables hasta que el equipo confirme los canales oficiales.",
+      "El Instagram oficial ya está enlazado; el correo institucional sigue pendiente de confirmación.",
   },
   {
     question: "¿Puedo proponer un proyecto?",
@@ -26,7 +26,7 @@ const faqs = [
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Formulario de contacto, canales editables, ubicación general y preguntas frecuentes de Catamarca Global.",
+    "Formulario de contacto, canales oficiales, ubicación general y preguntas frecuentes de Catamarca Global.",
   alternates: {
     canonical: "/contacto",
   },
@@ -39,13 +39,13 @@ export default function ContactPage() {
         eyebrow="Contacto"
         current="Contacto"
         title="Hablemos de formación, cooperación y oportunidades"
-        text="El sitio queda listo para conectar correo institucional, redes sociales y canal de envío cuando el equipo los confirme."
+        text="El sitio queda listo para conectar correo institucional y canal de envío cuando el equipo los confirme."
       />
       <section className="section">
         <div className="container form-layout">
           <ContactForm />
           <aside className="contact-aside">
-            <SectionHeading eyebrow="Canales" title="Información editable" />
+            <SectionHeading eyebrow="Canales" title="Información de contacto" />
             <div className="contact-item">
               <Icon name="Mail" />
               <span>{siteConfig.contact.emailLabel}</span>
@@ -54,10 +54,14 @@ export default function ContactPage() {
               <Icon name="MapPin" />
               <span>{siteConfig.contact.location}</span>
             </div>
-            <div className="contact-item">
-              <Icon name="Network" />
-              <span>{siteConfig.contact.socialLabel}</span>
-            </div>
+            {siteConfig.contact.socials.map((social) => (
+              <div className="contact-item" key={social.href}>
+                <Icon name="Network" />
+                <a className="contact-link" href={social.href} rel="noopener noreferrer" target="_blank">
+                  {social.label} {social.handle}
+                </a>
+              </div>
+            ))}
           </aside>
         </div>
       </section>

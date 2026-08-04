@@ -4,8 +4,18 @@ export function SocialLinks() {
   return (
     <div className="social-links" aria-label="Redes sociales">
       <span>{siteConfig.contact.socialLabel}</span>
-      <span className="social-placeholder">Instagram</span>
-      <span className="social-placeholder">LinkedIn</span>
+      {siteConfig.contact.socials.map((social) => (
+        <a
+          aria-label={`${social.label} de Catamarca Global`}
+          className="social-link"
+          href={social.href}
+          key={social.href}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {social.label}
+        </a>
+      ))}
     </div>
   );
 }
