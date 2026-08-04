@@ -26,7 +26,6 @@ export function Hero() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="container hero__shell">
         <div className="hero__content">
-          <p className="eyebrow">Asociación civil</p>
           <Image
             src="/brand/logo-catamarca-global.webp?v=3"
             alt="Catamarca Global"
