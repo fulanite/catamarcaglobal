@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AreaCard } from "@/components/AreaCard";
 import { CTASection } from "@/components/CTASection";
 import { GradientButton } from "@/components/GradientButton";
@@ -170,19 +169,6 @@ export default function Home() {
               <NewsCard key={item.title} item={item} />
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="section alliances-preview">
-        <div className="container split-layout split-layout--center">
-          <SectionHeading
-            eyebrow="Alianzas"
-            title="Construimos redes que generan oportunidades"
-            intro="Este espacio queda preparado para universidades, municipios, organismos, organizaciones, empresas y redes cuando el equipo confirme su publicación."
-          />
-          <Link className="text-link text-link--large" href="/alianzas">
-            Ver espacio de alianzas <Icon name="ArrowRight" />
-          </Link>
         </div>
       </section>
 
