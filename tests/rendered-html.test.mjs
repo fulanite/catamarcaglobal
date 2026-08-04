@@ -35,6 +35,9 @@ test("server-renders the Catamarca Global homepage", async () => {
   assert.match(html, /Misión/);
   assert.match(html, /María Estela Argerich/);
   assert.match(html, /Luciana Parodi Cruz/);
+  assert.match(html, /https:\/\/catamarca-global\.matexcardozo\.chatgpt\.site\/favicon\.ico/);
+  assert.match(html, /https:\/\/catamarca-global\.matexcardozo\.chatgpt\.site\/favicon\.svg/);
+  assert.doesNotMatch(html, /catamarca-global\.pages\.dev\/favicon/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/i);
 });
 
