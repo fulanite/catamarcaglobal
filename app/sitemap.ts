@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/data/site";
 
+export const dynamic = "force-static";
+
 const routes = [
   "",
   "/quienes-somos",
