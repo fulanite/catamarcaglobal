@@ -27,11 +27,11 @@ export function Hero() {
         <div className="hero__content">
           <p className="eyebrow">Catamarca Global</p>
           <h1 id="hero-title">
-            Cooperación internacional desde Catamarca
+            Formación, redes y participación joven para conectar la provincia con el mundo
           </h1>
           <p className="hero__tagline">
-            Formación, redes y participación joven para conectar la provincia con el
-            mundo.
+            Una asociación civil que impulsa internacionalización, cooperación e
+            integración regional desde Catamarca.
           </p>
           <p className="hero__lead">
             Somos una asociación civil integrada por jóvenes profesionales y estudiantes
