@@ -52,7 +52,7 @@ export function Footer() {
       </div>
       <div className="container site-footer__bottom">
         <span>© 2026 Catamarca Global. Todos los derechos reservados.</span>
-        <span>Contenido institucional editable.</span>
+        <span>Conectamos Catamarca con el mundo.</span>
       </div>
     </footer>
   );

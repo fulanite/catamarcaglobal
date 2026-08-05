@@ -20,7 +20,7 @@ export default function AreasPage() {
       <PageHero
         eyebrow="Áreas de trabajo"
         current="Áreas"
-        title="Una estructura estratégica, transversal y preparada para crecer"
+        title="Una estructura estratégica y transversal"
         text="Las vocalías ordenan el trabajo institucional sin fragmentar la organización: cada área aporta una mirada y colabora con las demás."
       />
       <section className="section">

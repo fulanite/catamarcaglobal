@@ -14,7 +14,6 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <h3>{project.title}</h3>
       <p>{project.summary}</p>
-      {project.editableNote ? <p className="editable-note">{project.editableNote}</p> : null}
       <Link className="text-link" href={project.href}>
         Ver proyecto <Icon name="ArrowRight" />
       </Link>

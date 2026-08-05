@@ -22,15 +22,14 @@ export default function TeamPage() {
       <PageHero
         eyebrow="Equipo"
         current="Equipo"
-        title="Una estructura institucional clara, humana y escalable"
-        text="La Comisión Directiva y las vocalías estratégicas se presentan con nombres y cargos extraídos del organigrama institucional."
+        title="Comisión Directiva"
+        text="Conducción institucional de Catamarca Global."
       />
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Comisión Directiva"
-            title="Conducción institucional"
-            intro="Las fotos personales se incorporarán cuando existan imágenes reales autorizadas."
+            eyebrow="Equipo"
+            title="Comisión Directiva"
           />
           <div className="grid grid-4">
             {boardMembers.map((member) => (
@@ -58,7 +57,7 @@ export default function TeamPage() {
           <SectionHeading
             eyebrow="Organigrama"
             title="Nodos conectados, lectura simple"
-            intro="En escritorio se muestra como nodos conectados; en móvil se transforma en una lista jerárquica sin scroll horizontal."
+            intro="La organización integra conducción institucional, vocalías y equipos de trabajo."
           />
           <div className="org-chart" aria-label="Organigrama de Catamarca Global">
             <div className="org-node org-node--lead">Presidencia</div>
@@ -77,7 +76,7 @@ export default function TeamPage() {
             </div>
           </div>
           <div className="future-team-list">
-            <h3>Equipos de trabajo futuros</h3>
+            <h3>Equipos de trabajo</h3>
             <div className="compact-list">
               {futureTeamNames.map((team) => (
                 <span key={team}>{team}</span>

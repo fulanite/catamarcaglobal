@@ -39,8 +39,8 @@ export default function JoinPage() {
                 </span>
                 <h3>{option}</h3>
                 <p>
-                  Opción preparada para configurar convocatorias, requisitos y alcance
-                  cuando el equipo institucional lo confirme.
+                  Canal de participación para aportar tiempo, experiencia, ideas y redes
+                  al desarrollo de iniciativas institucionales.
                 </p>
               </article>
             ))}

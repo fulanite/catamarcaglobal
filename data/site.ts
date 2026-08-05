@@ -86,7 +86,7 @@ export const futureTeams = [
   "Eventos",
 ];
 
-export const editableAlliances = [
+export const allianceCategories = [
   "Universidades",
   "Municipios",
   "Organismos públicos",

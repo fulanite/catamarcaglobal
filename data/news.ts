@@ -4,7 +4,6 @@ export type NewsItem = {
   date: string;
   summary: string;
   href: string;
-  editable: boolean;
 };
 
 export const newsItems: NewsItem[] = [
@@ -15,6 +14,5 @@ export const newsItems: NewsItem[] = [
     summary:
       "El programa prevé presentación, sorteo de países, investigación, capacitaciones en escuelas, carpeta diplomática, práctica de debate y realización del Modelo ONU.",
     href: "/modelo-onu",
-    editable: false,
   },
 ];

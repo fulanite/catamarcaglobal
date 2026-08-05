@@ -386,7 +386,7 @@ export default function ModelOnuPage() {
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <h3>{stage.title}</h3>
                 <p>{stage.text}</p>
-                {stage.meta ? <p className="editable-note">{stage.meta}</p> : null}
+                {stage.meta ? <p className="timeline-note">{stage.meta}</p> : null}
               </article>
             ))}
           </div>
@@ -412,7 +412,7 @@ export default function ModelOnuPage() {
 
       <CTASection
         title="Tu voz suma al diálogo global"
-        text="El espacio queda preparado para consultas, inscripción, materiales y recursos cuando el equipo confirme el canal institucional de participación."
+        text="Consultá los materiales, acercá tus preguntas y sumate a una experiencia de formación, debate y cooperación."
       />
     </>
   );

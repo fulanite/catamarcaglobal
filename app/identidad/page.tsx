@@ -58,9 +58,8 @@ export default function IdentityPage() {
           <div>
             <SectionHeading eyebrow="Objetivo general" title={generalObjective} />
             <p>
-              El sitio está preparado para ampliar esta sección con indicadores,
-              memorias institucionales y resultados cuando existan datos públicos
-              confirmados.
+              Este objetivo orienta los programas, alianzas y acciones que impulsan la
+              proyección internacional de oportunidades desde Catamarca.
             </p>
           </div>
           <div className="numbered-list">

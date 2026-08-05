@@ -14,7 +14,6 @@ export function NewsCard({ item }: { item: NewsItem }) {
       </div>
       <h3>{item.title}</h3>
       <p>{item.summary}</p>
-      {item.editable ? <p className="editable-note">Contenido editable pendiente de publicación.</p> : null}
       <Link className="text-link" href={item.href}>
         Leer más <Icon name="ArrowRight" />
       </Link>

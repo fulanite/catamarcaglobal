@@ -755,7 +755,7 @@ li {
   font-size: 1.05rem;
 }
 
-.editable-note {
+.timeline-note {
   border-left: 4px solid var(--orange);
   padding-left: 12px;
   color: #6d4a22;
@@ -1494,8 +1494,7 @@ details ul {
   margin-top: 16px;
 }
 
-.social-link,
-.social-placeholder {
+.social-link {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   padding: 6px 10px;

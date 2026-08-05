@@ -5,12 +5,11 @@ export type Project = {
   slug: string;
   category: string;
   themes: string[];
-  status: "Vigente" | "En preparación" | "Contenido editable" | "Próximamente";
+  status: "Vigente" | "En preparación" | "Próximamente";
   summary: string;
   details: string;
   icon: IconName;
   href: string;
-  editableNote?: string;
 };
 
 export const projects: Project[] = [
