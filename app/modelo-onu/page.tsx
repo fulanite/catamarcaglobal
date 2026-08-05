@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { CTASection } from "@/components/CTASection";
 import { GradientButton } from "@/components/GradientButton";
 import { Icon, type IconName } from "@/components/Icon";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
-import { siteConfig } from "@/data/site";
-
-const supportMaterialUrl = `${siteConfig.url}/modelo-onu/#material-de-apoyo`;
 
 const competencies = [
   "Investigación",
@@ -323,15 +319,6 @@ export default function ModelOnuPage() {
             </span>
             <h2>Material Modelo ONU</h2>
             <p>Guía en PDF para consultar y usar durante el recorrido del programa.</p>
-            <a className="qr-card" href={supportMaterialUrl}>
-              <Image
-                alt="QR para abrir la sección de material de apoyo del Modelo ONU"
-                height={180}
-                src="/materiales/qr-material-modelo-onu.png"
-                width={180}
-              />
-              <span>Escaneá el QR para abrir esta sección del sitio.</span>
-            </a>
             <div className="button-row">
               <a
                 className="btn btn-primary"
