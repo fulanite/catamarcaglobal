@@ -132,7 +132,7 @@ export default function Home() {
             intro="La organización articula perfiles jóvenes, profesionales y universitarios para sostener formación, cooperación, innovación e integración regional."
           />
           <div className="grid grid-3">
-            {teamMembers.slice(0, 6).map((member) => (
+            {teamMembers.map((member) => (
               <TeamCard key={member.name} member={member} />
             ))}
           </div>
