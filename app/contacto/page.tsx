@@ -9,7 +9,7 @@ const faqs = [
   {
     question: "¿Cómo puedo contactar al equipo?",
     answer:
-      "El Instagram oficial ya está enlazado; el correo institucional sigue pendiente de confirmación.",
+      "Podés escribirnos por nuestro Instagram oficial o enviarnos un correo a voluntarios.catamarcaglobal@gmail.com.",
   },
   {
     question: "¿Puedo proponer un proyecto?",
@@ -39,7 +39,7 @@ export default function ContactPage() {
         eyebrow="Contacto"
         current="Contacto"
         title="Hablemos de formación, cooperación y oportunidades"
-        text="El sitio queda listo para conectar correo institucional y canal de envío cuando el equipo los confirme."
+        text="Podés contactarnos por nuestro Instagram oficial o enviarnos un correo a voluntarios.catamarcaglobal@gmail.com."
       />
       <section className="section">
         <div className="container form-layout">
@@ -48,7 +48,9 @@ export default function ContactPage() {
             <SectionHeading eyebrow="Canales" title="Información de contacto" />
             <div className="contact-item">
               <Icon name="Mail" />
-              <span>{siteConfig.contact.emailLabel}</span>
+              <a className="contact-link" href={`mailto:${siteConfig.contact.email}`}>
+                {siteConfig.contact.emailLabel}
+              </a>
             </div>
             <div className="contact-item">
               <Icon name="MapPin" />

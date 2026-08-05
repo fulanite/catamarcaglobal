@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { ErrorState } from "@/components/ErrorState";
 import { Icon } from "@/components/Icon";
 import { LoadingState } from "@/components/LoadingState";
-import { participationOptions } from "@/data/site";
+import { participationOptions, siteConfig } from "@/data/site";
 
 type FormState = {
   fullName: string;
@@ -43,8 +43,8 @@ export function ContactForm({ context = "contacto" }: { context?: "contacto" | "
   const helperText = useMemo(
     () =>
       context === "sumate"
-        ? "Los datos se validan localmente y quedan listos para conectar al canal institucional definido por el equipo."
-        : "El canal de envío institucional está pendiente de configuración.",
+        ? "Completá tus datos y se preparará un correo para enviar al equipo de Catamarca Global."
+        : "Completá tus datos y se preparará un correo para enviar al equipo de Catamarca Global.",
     [context],
   );
 
@@ -84,10 +84,24 @@ export function ContactForm({ context = "contacto" }: { context?: "contacto" | "
       return;
     }
     setStatus("sending");
-    window.setTimeout(() => {
-      setStatus("sent");
-      setForm(initialState);
-    }, 450);
+    const subject = encodeURIComponent(`Contacto web - ${form.participation}`);
+    const body = encodeURIComponent(
+      [
+        `Nombre y apellido: ${form.fullName}`,
+        `Correo: ${form.email}`,
+        form.phone ? `Teléfono: ${form.phone}` : null,
+        form.age ? `Edad: ${form.age}` : null,
+        `Institución o vínculo: ${form.institution}`,
+        `${participationLabel}: ${form.participation}`,
+        "",
+        "Mensaje:",
+        form.message,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    );
+    window.location.href = `mailto:${siteConfig.contact.email}?subject=${subject}&body=${body}`;
+    window.setTimeout(() => setStatus("sent"), 450);
   }
 
   return (
@@ -104,7 +118,7 @@ export function ContactForm({ context = "contacto" }: { context?: "contacto" | "
       {status === "sent" ? (
         <div className="success-message" role="status">
           <Icon name="CheckCircle2" />
-          Mensaje validado. El equipo puede conectar este formulario al canal institucional.
+          Se preparó un correo para enviar a Catamarca Global.
         </div>
       ) : null}
       <div className="form-grid">

@@ -7,8 +7,8 @@ export const siteConfig = {
   locale: "es-AR",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://catamarca-global.matexcardozo.chatgpt.site",
   contact: {
-    emailLabel: "Correo institucional editable",
-    email: "",
+    emailLabel: "voluntarios.catamarcaglobal@gmail.com",
+    email: "voluntarios.catamarcaglobal@gmail.com",
     location: "Catamarca, Argentina",
     socialLabel: "Redes sociales",
     socials: [
