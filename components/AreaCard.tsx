@@ -19,7 +19,7 @@ export function AreaCard({ area }: { area: Area }) {
           <dd>{area.responsible}</dd>
         </div>
       </dl>
-      <Link className="text-link" href={`/areas#${area.slug}`}>
+      <Link className="text-link" href={`/areas#${area.slug}-detalle`}>
         Conocer el área <Icon name="ArrowRight" />
       </Link>
     </article>
