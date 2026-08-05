@@ -38,10 +38,6 @@ export default function JoinPage() {
                   <Icon name="Handshake" />
                 </span>
                 <h3>{option}</h3>
-                <p>
-                  Canal de participación para aportar tiempo, experiencia, ideas y redes
-                  al desarrollo de iniciativas institucionales.
-                </p>
               </article>
             ))}
           </div>
