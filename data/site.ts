@@ -5,7 +5,7 @@ export const siteConfig = {
   description:
     "Asociación civil integrada por jóvenes profesionales y estudiantes universitarios comprometidos con la internacionalización, la cooperación, la formación y la integración regional desde Catamarca.",
   locale: "es-AR",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://catamarca-global.matexcardozo.chatgpt.site",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://catamarcaglobal.com",
   contact: {
     emailLabel: "voluntarios.catamarcaglobal@gmail.com",
     email: "voluntarios.catamarcaglobal@gmail.com",
