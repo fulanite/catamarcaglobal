@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Icon } from "@/components/Icon";
 import type { TeamMember } from "@/data/team";
 
 export function TeamCard({ member }: { member: TeamMember }) {
@@ -21,9 +19,6 @@ export function TeamCard({ member }: { member: TeamMember }) {
         <h3>{member.name}</h3>
         <p className="team-card__role">{member.role}</p>
         <p>{member.summary}</p>
-        <Link className="text-link" href={member.href}>
-          Perfil institucional <Icon name="ArrowRight" />
-        </Link>
       </div>
     </article>
   );
