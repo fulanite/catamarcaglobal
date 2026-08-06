@@ -123,7 +123,7 @@ export default function ModeloOnuLaunchNewsPage() {
             <ArticleImage {...photos[0]} />
             <p>
               Durante la jornada se concretó la firma de un convenio de cooperación entre
-              <strong>Catamarca Global</strong>, la Facultad de Derecho de la Universidad
+              {" "}<strong>Catamarca Global</strong>, la Facultad de Derecho de la Universidad
               Nacional de Catamarca y la Municipalidad de la Capital, representada por el
               intendente Gustavo Saadi. El acuerdo permitirá implementar el programa en
               las escuelas municipales N.º 3 "Gustavo Gabriel Levene" y Escuela
