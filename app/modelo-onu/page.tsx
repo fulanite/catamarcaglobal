@@ -196,6 +196,33 @@ export default function ModelOnuPage() {
       </section>
 
       <section className="section section--soft">
+        <div className="container editorial-layout split-layout--center">
+          <div>
+            <SectionHeading
+              eyebrow="Novedad institucional"
+              title="Lanzamiento oficial del primer Modelo ONU"
+              intro="Catamarca Global presentó oficialmente el programa junto a la Facultad de Derecho de la UNCA y la Municipalidad de la Capital."
+            />
+            <p>
+              La jornada incluyó la firma del convenio de cooperación, la presentación
+              del recorrido formativo y el sorteo de los 18 países que representarán las
+              delegaciones participantes.
+            </p>
+            <div className="button-row">
+              <GradientButton href="/novedades/modelo-onu-lanzamiento">
+                Leer la noticia completa
+              </GradientButton>
+            </div>
+          </div>
+          <img
+            className="linked-news-image"
+            src="/novedades/modelo-onu-lanzamiento/portada-modelo-onu.webp"
+            alt="Autoridades, estudiantes y miembros de Catamarca Global durante el lanzamiento del Modelo ONU."
+          />
+        </div>
+      </section>
+
+      <section className="section section--soft">
         <div className="container">
           <SectionHeading
             eyebrow="Punto de partida"

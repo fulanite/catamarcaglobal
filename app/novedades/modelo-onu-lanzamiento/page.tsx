@@ -64,9 +64,17 @@ export const metadata: Metadata = {
   },
 };
 
-function ArticleImage({ src, alt }: { src: string; alt: string }) {
+function ArticleImage({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   return (
-    <figure className="article-photo">
+    <figure className={`article-photo ${className}`}>
       <img src={src} alt={alt} loading="lazy" />
     </figure>
   );
@@ -98,28 +106,30 @@ export default function ModeloOnuLaunchNewsPage() {
 
           <div className="article-content">
             <p className="article-lead">
-              Con la firma de un convenio entre Catamarca Global, la Facultad de Derecho
-              de la Universidad Nacional de Catamarca y la Municipalidad de la Capital,
-              comenzó oficialmente el primer Modelo ONU impulsado por la asociación
-              civil, una iniciativa destinada a acercar a los jóvenes al mundo de la
-              diplomacia, el debate y la construcción de consensos.
+              Con la firma de un convenio entre <strong>Catamarca Global</strong>, la
+              Facultad de Derecho de la Universidad Nacional de Catamarca y la
+              Municipalidad de la Capital, comenzó oficialmente el primer Modelo ONU
+              impulsado por la asociación civil, una iniciativa destinada a acercar a los
+              jóvenes al mundo de la diplomacia, el debate y la construcción de
+              consensos.
             </p>
             <p>
               El pasado miércoles 5 de agosto, en el Auditorio del Nodo Tecnológico, se
               realizó la presentación oficial del Modelo de Asamblea General de Naciones
-              Unidas, el primer gran proyecto de Catamarca Global, con la participación de
-              autoridades, docentes, estudiantes y de toda la Comisión Directiva de la
-              institución.
+              Unidas, el primer gran proyecto de <strong>Catamarca Global</strong>, con
+              la participación de autoridades, docentes, estudiantes y de toda la Comisión
+              Directiva de la institución.
             </p>
             <ArticleImage {...photos[0]} />
             <p>
               Durante la jornada se concretó la firma de un convenio de cooperación entre
-              Catamarca Global, la Facultad de Derecho de la Universidad Nacional de
-              Catamarca y la Municipalidad de la Capital, representada por el intendente
-              Gustavo Saadi. El acuerdo permitirá implementar el programa en las escuelas
-              municipales N.º 3 "Gustavo Gabriel Levene" y Escuela Secundaria Municipal
-              "Miguel Cané", además de incorporar a estudiantes de la carrera de
-              Relaciones Internacionales como mentores del proceso formativo.
+              <strong>Catamarca Global</strong>, la Facultad de Derecho de la Universidad
+              Nacional de Catamarca y la Municipalidad de la Capital, representada por el
+              intendente Gustavo Saadi. El acuerdo permitirá implementar el programa en
+              las escuelas municipales N.º 3 "Gustavo Gabriel Levene" y Escuela
+              Secundaria Municipal "Miguel Cané", además de incorporar a estudiantes de
+              la carrera de Relaciones Internacionales como mentores del proceso
+              formativo.
             </p>
             <div className="article-photo-grid">
               <ArticleImage {...photos[1]} />
@@ -135,7 +145,7 @@ export default function ModeloOnuLaunchNewsPage() {
               la oratoria, el pensamiento crítico, el trabajo en equipo y la negociación.
             </p>
             <div className="article-photo-grid">
-              <ArticleImage {...photos[3]} />
+              <ArticleImage {...photos[3]} className="article-photo--focus-speaker" />
               <ArticleImage {...photos[4]} />
             </div>
             <p>
@@ -167,26 +177,27 @@ export default function ModeloOnuLaunchNewsPage() {
               simulación final, que se desarrollará los días 9 y 10 de noviembre.
             </p>
             <div className="article-photo-grid article-photo-grid--three">
-              <ArticleImage {...photos[7]} />
+              <ArticleImage {...photos[7]} className="article-photo--focus-top" />
               <ArticleImage {...photos[8]} />
               <ArticleImage {...photos[9]} />
             </div>
             <p>
-              La iniciativa refleja la misión de Catamarca Global de promover la formación
-              de jóvenes líderes con mirada internacional mediante espacios de
-              capacitación, intercambio y vinculación estratégica, impulsando oportunidades
-              que conecten a Catamarca con el mundo. El desarrollo de simulaciones
-              académicas como los Modelos de Naciones Unidas forma parte de los objetivos
-              fundacionales de la asociación, junto con el fortalecimiento del liderazgo
-              juvenil, la cooperación y la internacionalización de la provincia.
+              La iniciativa refleja la misión de <strong>Catamarca Global</strong> de
+              promover la formación de jóvenes líderes con mirada internacional mediante
+              espacios de capacitación, intercambio y vinculación estratégica, impulsando
+              oportunidades que conecten a Catamarca con el mundo. El desarrollo de
+              simulaciones académicas como los Modelos de Naciones Unidas forma parte de
+              los objetivos fundacionales de la asociación, junto con el fortalecimiento
+              del liderazgo juvenil, la cooperación y la internacionalización de la
+              provincia.
             </p>
             <ArticleImage {...photos[10]} />
             <p>
-              Con este lanzamiento, Catamarca Global da inicio a un proyecto que busca
-              formar una nueva generación de jóvenes capaces de comprender los grandes
-              desafíos internacionales, dialogar con respeto, construir acuerdos y
-              convertirse en protagonistas del desarrollo de una Catamarca cada vez más
-              conectada con el mundo.
+              Con este lanzamiento, <strong>Catamarca Global</strong> da inicio a un
+              proyecto que busca formar una nueva generación de jóvenes capaces de
+              comprender los grandes desafíos internacionales, dialogar con respeto,
+              construir acuerdos y convertirse en protagonistas del desarrollo de una
+              Catamarca cada vez más conectada con el mundo.
             </p>
           </div>
         </div>

@@ -790,6 +790,14 @@ li {
   aspect-ratio: 4 / 3;
 }
 
+.article-photo--focus-top img {
+  object-position: center 18%;
+}
+
+.article-photo--focus-speaker img {
+  object-position: center 20%;
+}
+
 .article-meta {
   display: flex;
   flex-wrap: wrap;
@@ -815,6 +823,11 @@ li {
   font-size: 1.06rem;
 }
 
+.article-content strong {
+  color: var(--purple-deep);
+  font-weight: 850;
+}
+
 .article-lead {
   color: var(--purple-deep);
   font-family: var(--font-heading), Montserrat, Arial, sans-serif;
@@ -826,6 +839,15 @@ li {
 .article-photo-grid {
   display: grid;
   gap: 18px;
+}
+
+.linked-news-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid rgba(229, 220, 233, 0.94);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+  object-fit: cover;
 }
 
 .text-link--large {
