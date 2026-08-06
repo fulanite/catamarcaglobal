@@ -64,6 +64,21 @@ export default function Home() {
       <section className="section section--soft">
         <div className="container">
           <SectionHeading
+            eyebrow="Novedades"
+            title="Actualidad de Catamarca Global"
+            intro="Seguimos de cerca los proyectos, capacitaciones y encuentros que impulsan la agenda institucional."
+          />
+          <div className="grid grid-3">
+            {newsItems.map((item) => (
+              <NewsCard key={item.title} item={item} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft">
+        <div className="container">
+          <SectionHeading
             eyebrow="Valores"
             title="Principios para cooperar mejor"
             intro="Seis valores orientan la forma de diseñar programas, convocar equipos y construir vínculos institucionales."
@@ -94,11 +109,11 @@ export default function Home() {
 
       <section className="section section--soft">
         <div className="container">
-            <SectionHeading
-              eyebrow="Proyectos"
-              title="Nuestro primer proyecto ya tiene una hoja de ruta"
-              intro="El Modelo de Asamblea General de Naciones Unidas abre una agenda de formación para mirar el mundo desde Catamarca, debatir problemáticas internacionales y construir soluciones colectivas."
-            />
+          <SectionHeading
+            eyebrow="Proyectos"
+            title="Nuestro primer proyecto ya tiene una hoja de ruta"
+            intro="El Modelo de Asamblea General de Naciones Unidas abre una agenda de formación para mirar el mundo desde Catamarca, debatir problemáticas internacionales y construir soluciones colectivas."
+          />
           <div className="grid grid-3">
             {projects.slice(0, 6).map((project) => (
               <ProjectCard key={project.slug} project={project} />
@@ -152,21 +167,6 @@ export default function Home() {
                 <Icon name="Sparkles" />
                 <span>{concept}</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--soft">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Novedades"
-            title="Actualidad del Modelo ONU"
-            intro="La novedad vigente acompaña el recorrido de capacitaciones, investigación y simulación diplomática del Modelo ONU."
-          />
-          <div className="grid grid-3">
-            {newsItems.map((item) => (
-              <NewsCard key={item.title} item={item} />
             ))}
           </div>
         </div>

@@ -20,12 +20,4 @@ export const newsItems: NewsItem[] = [
     imageAlt:
       "Autoridades, estudiantes y miembros de Catamarca Global durante el lanzamiento del Modelo ONU.",
   },
-  {
-    title: "Modelo ONU: capacitaciones y simulación",
-    category: "Modelo ONU",
-    date: "8/9, 15/10, 9 y 10/11",
-    summary:
-      "El programa prevé presentación, sorteo de países, investigación, capacitaciones en escuelas, carpeta diplomática, práctica de debate y realización del Modelo ONU.",
-    href: "/modelo-onu",
-  },
 ];
