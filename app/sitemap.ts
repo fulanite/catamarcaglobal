@@ -12,6 +12,7 @@ const routes = [
   "/modelo-onu",
   "/equipo",
   "/novedades",
+  "/novedades/modelo-onu-lanzamiento",
   "/sumate",
   "/contacto",
   "/alianzas",

@@ -20,15 +20,15 @@ export default function NewsPage() {
       <PageHero
         eyebrow="Novedades"
         current="Novedades"
-        title="Actualidad del Modelo ONU"
-        text="La novedad vigente de Catamarca Global acompaña el recorrido de capacitaciones, investigación y simulación diplomática del Modelo ONU."
+        title="Actualidad de Catamarca Global"
+        text="Noticias, lanzamientos e hitos institucionales que conectan a jóvenes, escuelas y aliados estratégicos con una mirada internacional."
       />
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Modelo ONU"
-            title="Capacitaciones y simulación"
-            intro="Por ahora, el Modelo ONU concentra las novedades institucionales publicadas."
+            eyebrow="Novedades"
+            title="Últimas publicaciones"
+            intro="Seguimos de cerca los proyectos, capacitaciones y encuentros que impulsan la agenda de Catamarca Global."
           />
           <div className="grid grid-3">
             {newsItems.map((item) => (
