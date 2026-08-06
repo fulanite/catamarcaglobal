@@ -105,14 +105,6 @@ export default function ModeloOnuLaunchNewsPage() {
           </div>
 
           <div className="article-content">
-            <p className="article-lead">
-              Con la firma de un convenio entre <strong>Catamarca Global</strong>, la
-              Facultad de Derecho de la Universidad Nacional de Catamarca y la
-              Municipalidad de la Capital, comenzó oficialmente el primer Modelo ONU
-              impulsado por la asociación civil, una iniciativa destinada a acercar a los
-              jóvenes al mundo de la diplomacia, el debate y la construcción de
-              consensos.
-            </p>
             <p>
               El pasado miércoles 5 de agosto, en el Auditorio del Nodo Tecnológico, se
               realizó la presentación oficial del Modelo de Asamblea General de Naciones
