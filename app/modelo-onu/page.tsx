@@ -195,6 +195,34 @@ export default function ModelOnuPage() {
         </div>
       </section>
 
+      <section className="section section--soft" id="juego-basta-global">
+        <div className="container model-game-callout">
+          <div>
+            <SectionHeading
+              eyebrow="Recurso interactivo"
+              title="¡BASTA! Global"
+              intro="Un juego para practicar países y capitales antes de las instancias de debate, con dinámica rápida y formato participativo."
+            />
+            <div className="button-row">
+              <a
+                className="btn btn-primary"
+                href="/juegos/basta-global.html"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir juego
+              </a>
+            </div>
+          </div>
+          <figure className="model-game-preview">
+            <img
+              src="/juegos/basta-global-preview.png"
+              alt="Captura del juego Basta Global con ruleta de letras, timer y controles de países y capitales."
+            />
+          </figure>
+        </div>
+      </section>
+
       <section className="section section--soft">
         <div className="container editorial-layout split-layout--center">
           <div>

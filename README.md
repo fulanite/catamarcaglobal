@@ -70,6 +70,8 @@ Variables sugeridas:
 - `SITE_CONTACT_EMAIL`
 - `FORM_ENDPOINT`
 
-## Despliegue
+## Publicación
 
-El proyecto incluye `.openai/hosting.json` para Sites. Antes de publicar, ejecutar lint y build, revisar contenidos editables y definir `NEXT_PUBLIC_SITE_URL` con el dominio final.
+La publicación vigente se hace subiendo el repositorio a GitHub. No publicar nuevas versiones con OpenAI Sites salvo pedido explícito.
+
+Antes de publicar, ejecutar lint y build, revisar contenidos editables y definir `NEXT_PUBLIC_SITE_URL` con el dominio final.

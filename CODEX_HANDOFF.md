@@ -11,7 +11,7 @@ Este archivo es para que otro Codex pueda continuar el proyecto en otra computad
 - Rama actual: `main`.
 - Ultimo commit registrado: `aa020e4 Build Catamarca Global institutional site`.
 - Estado local al crear este handoff: `git status --short` limpio dentro de `site/`.
-- Stack: Next.js App Router, React 19, TypeScript, CSS global, Tailwind/PostCSS, Vinext/Vite y Cloudflare Workers/Sites.
+- Stack: Next.js App Router, React 19, TypeScript, CSS global, Tailwind/PostCSS, Vinext/Vite.
 - Version de Node requerida por `package.json`: `>=22.12.0`.
 
 ## Primeros pasos en otra compu
@@ -75,7 +75,7 @@ npm test
 - `data/`: contenido institucional editable separado de la UI.
 - `public/brand/`: logos y recursos de marca.
 - `tests/`: pruebas de HTML renderizado.
-- `.openai/hosting.json`: configuracion de OpenAI Sites.
+- `.openai/hosting.json`: configuracion historica de OpenAI Sites. No usar para nuevas publicaciones salvo pedido explicito.
 
 ## Archivos de contenido
 
@@ -123,7 +123,9 @@ Usar estos documentos como referencia, pero no publicar nombres, fechas, cargos,
 
 ## Despliegue
 
-El proyecto tiene `.openai/hosting.json` con:
+Decision vigente: no publicar nuevas versiones con OpenAI Sites. Para futuras implementaciones, validar localmente y publicar subiendo el repositorio a GitHub.
+
+El proyecto conserva `.openai/hosting.json` con:
 
 ```json
 {
@@ -133,15 +135,17 @@ El proyecto tiene `.openai/hosting.json` con:
 }
 ```
 
-Si se usa OpenAI Sites, reutilizar ese `project_id`. No crear otro proyecto de hosting para esta misma web salvo indicacion explicita.
+No crear versiones ni despliegues en OpenAI Sites salvo que el usuario lo pida explicitamente. Si alguna vez se vuelve a usar OpenAI Sites, reutilizar ese `project_id`. No crear otro proyecto de hosting para esta misma web salvo indicacion explicita.
 
-Antes de desplegar:
+Antes de preparar una publicacion por GitHub:
 
 1. Correr `npm run lint`.
 2. Correr `npm run build`.
 3. Correr `npm test`.
 4. Revisar placeholders en `data/news.ts`, `data/projects.ts` y `data/site.ts`.
 5. Definir `NEXT_PUBLIC_SITE_URL`.
+6. Committear los cambios en `site/`.
+7. Subir el repo a GitHub y usar ese repositorio como fuente de publicacion.
 
 ## Reglas para el proximo Codex
 
@@ -152,5 +156,6 @@ Antes de desplegar:
 - No inventar informacion publica. Usar `Contenido editable`, `Fecha editable`, `En preparacion` o `Proximamente` cuando falten datos.
 - Preferir cambios en `data/` cuando el pedido sea de contenido.
 - Mantener componentes reutilizables y seguir los patrones existentes.
-- No tocar `.openai/hosting.json` salvo que el usuario pida hosting o despliegue.
+- No publicar con OpenAI Sites. Usar GitHub como camino de publicacion para futuras implementaciones.
+- No tocar `.openai/hosting.json` salvo que el usuario pida especificamente volver a usar Sites.
 - Mantener los archivos en UTF-8.

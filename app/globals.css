@@ -850,6 +850,29 @@ li {
   object-fit: cover;
 }
 
+.model-game-callout {
+  display: grid;
+  gap: 30px;
+  align-items: center;
+}
+
+.model-game-preview {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(229, 220, 233, 0.94);
+  border-radius: var(--radius-card);
+  background: var(--purple-night);
+  box-shadow: var(--shadow-soft);
+}
+
+.model-game-preview img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: left top;
+}
+
 .text-link--large {
   font-size: 1.05rem;
 }
@@ -1688,6 +1711,7 @@ details ul {
   .split-layout,
   .editorial-layout,
   .form-layout,
+  .model-game-callout,
   .model-band__grid,
   .area-detail {
     grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
