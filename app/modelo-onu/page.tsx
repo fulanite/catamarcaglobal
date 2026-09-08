@@ -402,7 +402,7 @@ export default function ModelOnuPage() {
                 <div className="button-row">
                   <a
                     className="btn btn-secondary"
-                    href="/materiales/presentacion-capacitacion-n1.pdf"
+                    href="https://drive.google.com/file/d/1VvLx-CoBIhenGn9lP6SJSPZ7rYG5TeXD/view?usp=sharing"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -410,8 +410,9 @@ export default function ModelOnuPage() {
                   </a>
                   <a
                     className="btn btn-primary"
-                    href="/materiales/presentacion-capacitacion-n1.pdf"
-                    download="Presentación capacitación N°1.pdf"
+                    href="https://drive.google.com/file/d/1VvLx-CoBIhenGn9lP6SJSPZ7rYG5TeXD/view?usp=sharing"
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     Descargar
                   </a>
