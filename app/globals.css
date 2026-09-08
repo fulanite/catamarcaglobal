@@ -873,6 +873,30 @@ li {
   object-position: left top;
 }
 
+.material-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.material-item {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid rgba(109, 79, 122, 0.18);
+  padding-top: 16px;
+}
+
+.material-item h3 {
+  margin: 0;
+  color: var(--purple-deep);
+  font-size: 1rem;
+}
+
+.material-item p {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
 .text-link--large {
   font-size: 1.05rem;
 }

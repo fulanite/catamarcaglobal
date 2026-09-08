@@ -372,16 +372,51 @@ export default function ModelOnuPage() {
             <span className="icon-badge">
               <Icon name="Download" />
             </span>
-            <h2>Material Modelo ONU</h2>
-            <p>Guía en PDF para consultar y usar durante el recorrido del programa.</p>
-            <div className="button-row">
-              <a
-                className="btn btn-primary"
-                href="/materiales/material-modelo-onu.pdf"
-                download="Material Modelo ONU.pdf"
-              >
-                Descargar PDF
-              </a>
+            <h2>Materiales Modelo ONU</h2>
+            <p>Recursos en PDF para consultar o descargar durante el recorrido del programa.</p>
+            <div className="material-list">
+              <article className="material-item">
+                <h3>Material Modelo ONU</h3>
+                <p>Guía general para acompañar la preparación de las delegaciones.</p>
+                <div className="button-row">
+                  <a
+                    className="btn btn-secondary"
+                    href="/materiales/material-modelo-onu.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Ver PDF
+                  </a>
+                  <a
+                    className="btn btn-primary"
+                    href="/materiales/material-modelo-onu.pdf"
+                    download="Material Modelo ONU.pdf"
+                  >
+                    Descargar
+                  </a>
+                </div>
+              </article>
+              <article className="material-item">
+                <h3>Presentación capacitación N°1</h3>
+                <p>Presentación de la primera capacitación del Modelo ONU.</p>
+                <div className="button-row">
+                  <a
+                    className="btn btn-secondary"
+                    href="/materiales/presentacion-capacitacion-n1.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Ver PDF
+                  </a>
+                  <a
+                    className="btn btn-primary"
+                    href="/materiales/presentacion-capacitacion-n1.pdf"
+                    download="Presentación capacitación N°1.pdf"
+                  >
+                    Descargar
+                  </a>
+                </div>
+              </article>
             </div>
           </aside>
         </div>
