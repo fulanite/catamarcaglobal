@@ -62,6 +62,11 @@ export function CoordinacionEvaluaciones() {
   const [nombreNueva, setNombreNueva] = useState("");
   const [claveCierre, setClaveCierre] = useState("");
   const [confirmado, setConfirmado] = useState(false);
+  const [mostrarCambio, setMostrarCambio] = useState(false);
+  const [claveActual, setClaveActual] = useState("");
+  const [claveNueva, setClaveNueva] = useState("");
+  const [claveConfirmacion, setClaveConfirmacion] = useState("");
+  const [claveError, setClaveError] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -119,6 +124,10 @@ export function CoordinacionEvaluaciones() {
       setAccess("login");
       setPassword("");
       setMessage("");
+      setMostrarCambio(false);
+      setClaveActual("");
+      setClaveNueva("");
+      setClaveConfirmacion("");
     } catch {
       setMessage("No se pudo cerrar la sesión. Probá nuevamente.");
     }
@@ -153,6 +162,28 @@ export function CoordinacionEvaluaciones() {
     finally { setBusy(false); }
   }
 
+  async function cambiarClave(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy) return;
+    if (claveNueva !== claveConfirmacion) { setClaveError("Las dos versiones de la nueva clave no coinciden."); return; }
+    setBusy(true);
+    setClaveError("");
+    try {
+      const { status, data } = await request("POST", { action: "cambiar_clave", actual: claveActual, nueva: claveNueva, confirmacion: claveConfirmacion });
+      if (status !== 200 || data.ok !== true) { setClaveError(data.error || "No se pudo cambiar la clave."); return; }
+      setClaveActual("");
+      setClaveNueva("");
+      setClaveConfirmacion("");
+      setMostrarCambio(false);
+      setFichas([]);
+      setHistorial([]);
+      setInstancia(null);
+      setAccess("login");
+      setMessage("Clave actualizada. Ingresá con la nueva clave.");
+    } catch { setClaveError("No se pudo conectar con el servidor."); }
+    finally { setBusy(false); }
+  }
+
   const visible = useMemo(() => fichas.filter((ficha) => {
     if (estado !== "todos" && ficha.estado !== estado) return false;
     const search = `${ficha.jurado} ${ficha.comision} ${ficha.delegacion}`.toLocaleLowerCase("es-AR");
@@ -175,7 +206,7 @@ export function CoordinacionEvaluaciones() {
     <header className="coord-header"><span className="eval-kicker">Acceso de coordinación</span><h1>Fichas de evaluación</h1><p>Consulta de todas las fichas recibidas en la base de datos.</p></header>
     {access === "loading" && <p className="coord-panel" role="status">Cargando fichas…</p>}
     {access === "error" && <div className="coord-panel"><p role="alert">{message}</p><button className="coord-secondary" type="button" onClick={() => { setAccess("loading"); void load(); }}>Reintentar</button></div>}
-    {access === "login" && <form className="coord-panel coord-login" onSubmit={(event) => void login(event)}><h2>Ingresar a coordinación</h2><p>La clave permite consultar las evaluaciones y cerrar instancias. El jurado no necesita clave para completar el formulario.</p><label>Clave de coordinación<input type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label><button className="coord-primary" type="submit" disabled={busy}>{busy ? "Ingresando…" : "Ingresar"}</button>{message && <p className="coord-error" role="alert">{message}</p>}</form>}
+    {access === "login" && <form className="coord-panel coord-login" onSubmit={(event) => void login(event)}><h2>Ingresar a coordinación</h2><p>La clave permite consultar las evaluaciones, cerrar instancias y cambiar la clave. El jurado no necesita clave para completar el formulario.</p><label>Clave de coordinación<input type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label><button className="coord-primary" type="submit" disabled={busy}>{busy ? "Ingresando…" : "Ingresar"}</button>{message && <p className={message.startsWith("Clave actualizada") ? "coord-notice" : "coord-error"} role="status">{message}</p>}</form>}
     {access === "ready" && <>
       <p className="coord-instance">Instancia activa: <strong>{instancia?.nombre}</strong> · desde {instancia?.iniciada?.slice(0, 10)}</p>
       <div className="coord-overview"><div><strong>{fichas.length}</strong><span>Fichas recibidas</span></div><div><strong>{finalizadas}</strong><span>Finalizadas</span></div><div><strong>{jurados}</strong><span>Jurados</span></div></div>
@@ -188,6 +219,9 @@ export function CoordinacionEvaluaciones() {
       </section>
       <section className="coord-panel coord-history"><div className="coord-toolbar"><div><h2>Historial por día</h2><p>{historial.length} fichas de instancias cerradas</p></div><button className="coord-secondary" type="button" onClick={() => exportCsv(historial, "historial-modelo-onu", true)} disabled={!historial.length}>Descargar historial CSV</button></div>
         {gruposHistorial.length ? <div className="coord-history-groups">{gruposHistorial.map((grupo) => <details key={grupo.clave} className="coord-history-group"><summary><strong>{grupo.titulo}</strong><span>{grupo.fichas.length} ficha{grupo.fichas.length === 1 ? "" : "s"}</span></summary><div className="coord-list">{grupo.fichas.map((ficha) => <FichaItem ficha={ficha} key={`${ficha.instancia}-${ficha.id}`} />)}</div></details>)}</div> : <p className="coord-empty">Todavía no hay instancias archivadas.</p>}
+      </section>
+      <section className="coord-panel coord-cycle"><h2>Clave de coordinación</h2><p>Podés usar una frase que recuerdes fácilmente. Debe tener al menos 16 caracteres; las palabras y los espacios cuentan.</p>
+        {!mostrarCambio ? <button className="coord-secondary" type="button" onClick={() => { setMostrarCambio(true); setClaveError(""); }}>Cambiar clave</button> : <form className="coord-close-form" onSubmit={(event) => void cambiarClave(event)}><label>Clave actual<input type="password" autoComplete="current-password" value={claveActual} onChange={(event) => setClaveActual(event.target.value)} required /></label><label>Nueva clave<input type="password" autoComplete="new-password" minLength={16} value={claveNueva} onChange={(event) => setClaveNueva(event.target.value)} required /></label><label>Repetí la nueva clave<input type="password" autoComplete="new-password" minLength={16} value={claveConfirmacion} onChange={(event) => setClaveConfirmacion(event.target.value)} required /></label>{claveError && <p className="coord-error" role="alert">{claveError}</p>}<div className="coord-close-actions"><button className="coord-primary" type="submit" disabled={busy}>{busy ? "Guardando…" : "Guardar nueva clave"}</button><button className="coord-text" type="button" onClick={() => { setMostrarCambio(false); setClaveActual(""); setClaveNueva(""); setClaveConfirmacion(""); setClaveError(""); }}>Cancelar</button></div></form>}
       </section>
     </>}
   </div></div>;

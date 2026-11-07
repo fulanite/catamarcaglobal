@@ -35,6 +35,11 @@ $config = require $configFile;
 if (!is_array($config) || empty($config['db']) || empty($config['admin_password_hash']) || $config['admin_password_hash'] === 'REEMPLAZAR_CON_HASH') {
     responder(503, ['error' => 'Falta configurar la base de datos o el acceso de coordinación.']);
 }
+$hashFile = dirname($configFile) . '/cata-evaluacion-admin.hash';
+$adminHash = is_file($hashFile) ? trim((string)file_get_contents($hashFile)) : (string)$config['admin_password_hash'];
+if (!(password_get_info($adminHash)['algo'] ?? null)) {
+    responder(503, ['error' => 'La clave de coordinación necesita revisión en el servidor.']);
+}
 
 $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
 ini_set('session.use_strict_mode', '1');
@@ -44,8 +49,11 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/api/', 'secure' => $secu
 session_start();
 
 function autorizado(): bool {
+    global $adminHash;
     $since = $_SESSION['admin_since'] ?? null;
-    return is_int($since) && $since > time() - 8 * 3600;
+    $fingerprint = $_SESSION['admin_hash'] ?? '';
+    return is_int($since) && $since > time() - 8 * 3600
+        && is_string($fingerprint) && hash_equals(hash('sha256', $adminHash), $fingerprint);
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
@@ -58,10 +66,43 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         session_destroy();
         responder(200, ['ok' => true]);
     }
+    if ($action === 'cambiar_clave') {
+        if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
+        $actual = $data['actual'] ?? null;
+        $nueva = $data['nueva'] ?? null;
+        $confirmacion = $data['confirmacion'] ?? null;
+        if (!is_string($actual) || !password_verify($actual, $adminHash)) {
+            usleep(350000);
+            responder(401, ['error' => 'La clave actual no coincide.']);
+        }
+        if (!is_string($nueva) || !is_string($confirmacion) || $nueva !== $confirmacion
+            || mb_strlen($nueva) < 16 || strlen($nueva) > 72) {
+            responder(400, ['error' => 'La nueva clave debe coincidir en ambos campos y tener entre 16 caracteres y 72 bytes.']);
+        }
+        try {
+            $nuevoHash = password_hash($nueva, PASSWORD_DEFAULT);
+            $temp = tempnam(dirname($configFile), '.cata-admin-');
+            if ($temp === false) throw new RuntimeException('No se pudo crear el archivo temporal.');
+            if (dirname($temp) !== dirname($configFile) || !chmod($temp, 0600)) {
+                @unlink($temp);
+                throw new RuntimeException('No se pudo proteger el archivo temporal.');
+            }
+            if (file_put_contents($temp, $nuevoHash . "\n", LOCK_EX) === false || !rename($temp, $hashFile)) {
+                @unlink($temp);
+                throw new RuntimeException('No se pudo guardar el hash.');
+            }
+            $_SESSION = [];
+            session_destroy();
+            responder(200, ['ok' => true]);
+        } catch (Throwable $error) {
+            error_log('Cambio de clave Modelo ONU: ' . $error->getMessage());
+            responder(500, ['error' => 'No se pudo cambiar la clave. La anterior sigue vigente.']);
+        }
+    }
     if ($action === 'cerrar_instancia') {
         if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
         $password = $data['password'] ?? null;
-        if (!is_string($password) || !password_verify($password, (string)$config['admin_password_hash'])) {
+        if (!is_string($password) || !password_verify($password, $adminHash)) {
             usleep(350000);
             responder(401, ['error' => 'La clave de coordinación no coincide.']);
         }
@@ -115,7 +156,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     if (is_int($blockedUntil) && $blockedUntil > time()) {
         responder(429, ['error' => 'Demasiados intentos. Probá nuevamente en unos minutos.']);
     }
-    if (!password_verify($password, (string)$config['admin_password_hash'])) {
+    if (!password_verify($password, $adminHash)) {
         $attempts = (int)($_SESSION['attempts'] ?? 0) + 1;
         $_SESSION['attempts'] = $attempts;
         if ($attempts >= 5) $_SESSION['blocked_until'] = time() + 600;
@@ -124,6 +165,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     }
     session_regenerate_id(true);
     $_SESSION['admin_since'] = time();
+    $_SESSION['admin_hash'] = hash('sha256', $adminHash);
     unset($_SESSION['attempts'], $_SESSION['blocked_until']);
     responder(200, ['ok' => true]);
 }

@@ -19,6 +19,7 @@
 .coord-text{border:0;background:transparent;color:var(--purple-global)}
 .coord-primary:disabled,.coord-secondary:disabled{opacity:.55;cursor:not-allowed}
 .coord-error{color:#a32642!important;background:#fff0f3;border-radius:9px;padding:10px;margin:15px 0 0!important}
+.coord-notice{color:#176342!important;background:#eaf8f0;border-radius:9px;padding:10px;margin:15px 0 0!important}
 .coord-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:17px}
 .coord-overview>div{padding:18px 21px}
 .coord-overview strong{display:block;color:var(--purple-global);font:800 2rem var(--font-heading),Montserrat,sans-serif;line-height:1.15}
