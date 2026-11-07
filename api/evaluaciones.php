@@ -15,7 +15,27 @@ function texto(mixed $value, int $max): string {
     return trim($value);
 }
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'PUT') responder(405, ['error' => 'Método no permitido.']);
+$method = $_SERVER['REQUEST_METHOD'] ?? '';
+if ($method === 'GET') {
+    $configFile = dirname(__DIR__, 2) . '/cata-evaluacion-config.php';
+    if (!is_file($configFile)) responder(503, ['error' => 'La evaluación todavía no está configurada.']);
+    $config = require $configFile;
+    if (!is_array($config) || empty($config['db'])) responder(503, ['error' => 'Configuración incompleta.']);
+    try {
+        $db = $config['db'];
+        $pdo = new PDO(
+            'mysql:host=' . $db['host'] . ';port=' . (int)($db['port'] ?? 3306) . ';dbname=' . $db['name'] . ';charset=utf8mb4',
+            $db['user'], $db['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        $control = $pdo->query('SELECT instancia,nombre FROM evaluacion_control WHERE id = 1')->fetch(PDO::FETCH_ASSOC);
+        if (!$control) responder(503, ['error' => 'Falta configurar la instancia de evaluación.']);
+        responder(200, ['instancia' => $control['instancia'], 'nombre' => $control['nombre']]);
+    } catch (Throwable $error) {
+        error_log('Instancia Modelo ONU: ' . $error->getMessage());
+        responder(503, ['error' => 'No se pudo consultar la instancia de evaluación.']);
+    }
+}
+if ($method !== 'PUT') responder(405, ['error' => 'Método no permitido.']);
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if ($origin !== '' && parse_url($origin, PHP_URL_HOST) !== ($_SERVER['HTTP_HOST'] ?? '')) {
     responder(403, ['error' => 'Origen no permitido.']);
@@ -26,8 +46,12 @@ if (!is_array($data)) responder(400, ['error' => 'Solicitud inválida.']);
 
 $id = (string)($data['id'] ?? '');
 $token = (string)($data['token'] ?? '');
+$instancia = (string)($data['instancia'] ?? '');
 if (!preg_match('/^[0-9a-fA-F-]{36}$/', $id) || !preg_match('/^[0-9a-fA-F-]{36}$/', $token)) {
     responder(400, ['error' => 'Identificador de ficha inválido.']);
+}
+if (!preg_match('/^[0-9a-fA-F-]{36}$/', $instancia)) {
+    responder(409, ['error' => 'Actualizá la página para iniciar la instancia de evaluación.']);
 }
 $jurado = texto($data['jurado'] ?? '', 80);
 if ($jurado === '') responder(400, ['error' => 'Escribí el nombre del jurado.']);
@@ -70,6 +94,11 @@ try {
     );
     $hash = hash('sha256', $token);
     $pdo->beginTransaction();
+    $actual = $pdo->query('SELECT instancia FROM evaluacion_control WHERE id = 1 FOR UPDATE')->fetchColumn();
+    if ($actual === false || !hash_equals((string)$actual, $instancia)) {
+        $pdo->rollBack();
+        responder(409, ['error' => 'Esta ficha pertenece a una instancia anterior. Actualizá la página para comenzar una nueva evaluación.']);
+    }
     $find = $pdo->prepare('SELECT token_hash FROM evaluaciones WHERE id = ? FOR UPDATE');
     $find->execute([$id]);
     $existing = $find->fetchColumn();

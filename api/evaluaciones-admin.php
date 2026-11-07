@@ -58,6 +58,54 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         session_destroy();
         responder(200, ['ok' => true]);
     }
+    if ($action === 'cerrar_instancia') {
+        if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
+        $password = $data['password'] ?? null;
+        if (!is_string($password) || !password_verify($password, (string)$config['admin_password_hash'])) {
+            usleep(350000);
+            responder(401, ['error' => 'La clave de coordinación no coincide.']);
+        }
+        $esperada = $data['instancia'] ?? null;
+        $cantidad = $data['cantidad'] ?? null;
+        $nombreArchivo = $data['nombre_archivo'] ?? null;
+        $nombreNueva = $data['nombre_nueva'] ?? null;
+        if (!is_string($esperada) || !preg_match('/^[0-9a-fA-F-]{36}$/', $esperada)
+            || !is_int($cantidad) || $cantidad < 0
+            || !is_string($nombreArchivo) || trim($nombreArchivo) === '' || mb_strlen($nombreArchivo) > 120
+            || !is_string($nombreNueva) || trim($nombreNueva) === '' || mb_strlen($nombreNueva) > 120) {
+            responder(400, ['error' => 'Revisá los nombres y actualizá el listado antes de cerrar la instancia.']);
+        }
+        try {
+            $db = $config['db'];
+            $pdo = new PDO(
+                'mysql:host=' . $db['host'] . ';port=' . (int)($db['port'] ?? 3306) . ';dbname=' . $db['name'] . ';charset=utf8mb4',
+                $db['user'], $db['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+            );
+            $pdo->beginTransaction();
+            $control = $pdo->query('SELECT instancia FROM evaluacion_control WHERE id = 1 FOR UPDATE')->fetch(PDO::FETCH_ASSOC);
+            if (!$control || !hash_equals((string)$control['instancia'], $esperada)) {
+                $pdo->rollBack();
+                responder(409, ['error' => 'La instancia cambió. Actualizá el listado antes de continuar.']);
+            }
+            $actuales = (int)$pdo->query('SELECT COUNT(*) FROM evaluaciones')->fetchColumn();
+            if ($actuales !== $cantidad) {
+                $pdo->rollBack();
+                responder(409, ['error' => 'Cambió la cantidad de fichas. Actualizá el listado antes de continuar.']);
+            }
+            $archivar = $pdo->prepare('INSERT INTO evaluaciones_historial (instancia,instancia_nombre,id,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado,creado,actualizado) SELECT ?,?,id,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado,creado,actualizado FROM evaluaciones');
+            $archivar->execute([$esperada, trim($nombreArchivo)]);
+            $pdo->exec('DELETE FROM evaluaciones');
+            $nueva = sprintf('%s-%s-4%s-8%s-%s', bin2hex(random_bytes(4)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)), bin2hex(random_bytes(6)));
+            $cambiar = $pdo->prepare('UPDATE evaluacion_control SET instancia = ?, nombre = ?, iniciada = CURRENT_TIMESTAMP WHERE id = 1');
+            $cambiar->execute([$nueva, trim($nombreNueva)]);
+            $pdo->commit();
+            responder(200, ['ok' => true, 'archivadas' => $actuales]);
+        } catch (Throwable $error) {
+            if (isset($pdo) && $pdo->inTransaction()) $pdo->rollBack();
+            error_log('Cerrar instancia Modelo ONU: ' . $error->getMessage());
+            responder(500, ['error' => 'No se pudo cerrar la instancia. Las fichas permanecen activas.']);
+        }
+    }
     if ($action !== 'login') responder(400, ['error' => 'Acción inválida.']);
     $password = $data['password'] ?? null;
     if (!is_string($password) || $password === '' || strlen($password) > 512) {
@@ -108,7 +156,31 @@ try {
             'actualizado' => $row['actualizado'],
         ];
     }, $rows);
-    responder(200, ['ok' => true, 'fichas' => $fichas]);
+    $control = $pdo->query('SELECT instancia,nombre,iniciada FROM evaluacion_control WHERE id = 1')->fetch(PDO::FETCH_ASSOC);
+    if (!$control) responder(503, ['error' => 'Falta configurar la instancia de evaluación.']);
+    $historialRows = $pdo->query('SELECT instancia,instancia_nombre,archivado,id,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado,creado,actualizado FROM evaluaciones_historial ORDER BY fecha DESC,archivado DESC,id DESC')->fetchAll();
+    $historial = array_map(static function (array $row): array {
+        $scores = json_decode((string)$row['puntajes'], true);
+        return [
+            'instancia' => $row['instancia'],
+            'instancia_nombre' => $row['instancia_nombre'],
+            'archivado' => $row['archivado'],
+            'id' => $row['id'],
+            'jurado' => $row['jurado'],
+            'fecha' => $row['fecha'],
+            'comision' => $row['comision'],
+            'delegacion' => $row['delegacion'],
+            'puntajes' => is_array($scores) ? $scores : [],
+            'puntaje' => $row['puntaje'] === null ? null : (float)$row['puntaje'],
+            'fortaleza' => $row['fortaleza'],
+            'observacion' => $row['observacion'],
+            'candidata' => $row['candidata'] === null ? null : (bool)$row['candidata'],
+            'estado' => $row['estado'],
+            'creado' => $row['creado'],
+            'actualizado' => $row['actualizado'],
+        ];
+    }, $historialRows);
+    responder(200, ['ok' => true, 'fichas' => $fichas, 'historial' => $historial, 'instancia' => $control]);
 } catch (Throwable $error) {
     error_log('Consulta coordinación Modelo ONU: ' . $error->getMessage());
     responder(500, ['error' => 'No se pudieron cargar las fichas. Probá nuevamente.']);
