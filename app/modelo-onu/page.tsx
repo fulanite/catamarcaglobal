@@ -182,6 +182,7 @@ export default function ModelOnuPage() {
             </p>
             <div className="button-row">
               <GradientButton href="/sumate">Quiero recibir información</GradientButton>
+              <a className="btn btn-secondary" href="/modelo-onu/evaluacion/">Ingresar a la evaluación del jurado</a>
             </div>
           </div>
           <aside className="editorial-aside">
