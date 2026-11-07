@@ -1,6 +1,7 @@
-// Nómina de las credenciales posteriores de 49 alumnos del Modelo ONU.
-// Fuente: output/pdf/Credenciales_Modelo_ONU_49_alumnos_Rusia_actualizada_9x13cm.pdf.
+// 16 delegaciones de las credenciales de 49 alumnos más Afganistán y Ucrania.
+// Fuente más reciente: output/pdf/Carteles_de_mesa_Modelo_ONU_18_delegaciones_30x10cm_tres_logos.pdf.
 export const delegaciones = [
+  "Afganistán",
   "Alemania",
   "Argentina",
   "Brasil",
@@ -16,5 +17,6 @@ export const delegaciones = [
   "Rusia",
   "Siria",
   "Sudán",
+  "Ucrania",
   "Venezuela",
 ] as const;

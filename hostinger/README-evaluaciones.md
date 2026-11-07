@@ -19,7 +19,7 @@ Si el dominio sigue sirviendo el sitio desde otro proveedor, la API PHP de Hosti
 - La ficha se guarda localmente al editar y se sincroniza con la base cuando hay conexión. El indicador superior confirma el estado. Antes de cerrar el día, verificar **Sin cambios pendientes**.
 - El resultado se calcula solo cuando los diez criterios tienen calificación: suma de `(calificación / 4) × peso`.
 - Una ficha final necesita delegación, comisión, fecha y diez criterios. Las observaciones y la candidatura son opcionales.
-- El selector de delegaciones contiene los 16 países de la versión posterior de 49 credenciales, sin Turquía, según la nómina confirmada para la jornada. Para actualizarla, editar `data/delegaciones.ts` y recompilar antes de subir el sitio.
+- El selector contiene 18 delegaciones: las 16 de las credenciales de 49 alumnos más Afganistán y Ucrania, incorporadas en los carteles y banderines posteriores. Para actualizarlo, editar `data/delegaciones.ts` y la lista de validación de `public/api/evaluaciones.php`, y recompilar antes de subir el sitio.
 - Hacer un respaldo de la base antes y después de la jornada. Se puede exportar un CSV desde phpMyAdmin; no reemplaza el respaldo.
 - Los datos locales del navegador son solo una reserva temporal. No borrar datos del navegador mientras haya fichas pendientes. Una ficha guardada solo puede reabrirse desde el mismo navegador; coordinación puede revisar todas las recibidas en su panel o en phpMyAdmin.
 - En coordinación, **Cerrar y empezar otra** mueve las fichas actuales al historial y crea una instancia nueva con el contador en cero. El historial se agrupa por fecha de evaluación y nombre de instancia, y se puede descargar en CSV.
