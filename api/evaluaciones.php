@@ -60,7 +60,7 @@ $fechaObj = DateTimeImmutable::createFromFormat('!Y-m-d', $fecha);
 if (!$fechaObj || $fechaObj->format('Y-m-d') !== $fecha) responder(400, ['error' => 'Fecha inválida.']);
 $comision = texto($data['comision'] ?? '', 120);
 $delegacion = texto($data['delegacion'] ?? '', 120);
-$delegaciones = ['Alemania','Argentina','Brasil','Canadá','Colombia','España','Estados Unidos','Francia','Italia','Jordania','Marruecos','México','Rusia','Siria','Sudán','Venezuela'];
+$delegaciones = ['Afganistán','Alemania','Argentina','Brasil','Canadá','Colombia','España','Estados Unidos','Francia','Italia','Jordania','Marruecos','México','Rusia','Siria','Sudán','Ucrania','Venezuela'];
 if ($delegacion !== '' && !in_array($delegacion, $delegaciones, true)) responder(400, ['error' => 'Delegación inválida.']);
 $fortaleza = texto($data['fortaleza'] ?? '', 1000);
 $observacion = texto($data['observacion'] ?? '', 2000);
