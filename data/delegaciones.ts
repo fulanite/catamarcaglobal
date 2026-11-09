@@ -20,3 +20,24 @@ export const delegaciones = [
   "Ucrania",
   "Venezuela",
 ] as const;
+
+export const banderasDelegaciones: Record<(typeof delegaciones)[number], string> = {
+  "Afganistán": "af",
+  "Alemania": "de",
+  "Argentina": "ar",
+  "Brasil": "br",
+  "Canadá": "ca",
+  "Colombia": "co",
+  "España": "es",
+  "Estados Unidos": "us",
+  "Francia": "fr",
+  "Italia": "it",
+  "Jordania": "jo",
+  "Marruecos": "ma",
+  "México": "mx",
+  "Rusia": "ru",
+  "Siria": "sy",
+  "Sudán": "sd",
+  "Ucrania": "ua",
+  "Venezuela": "ve",
+};

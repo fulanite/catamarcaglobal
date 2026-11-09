@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { banderasDelegaciones, delegaciones } from "@/data/delegaciones";
 
 type Phase = "ready" | "normal" | "warning" | "urgent" | "done";
 
@@ -20,15 +21,16 @@ function formatTime(ms: number) {
 function getPhase(ms: number, started: boolean): Phase {
   if (!started) return "ready";
   if (ms <= 0) return "done";
-  if (ms <= 60_000) return "urgent";
-  if (ms <= 120_000) return "warning";
+  if (ms <= 30_000) return "urgent";
+  if (ms <= 60_000) return "warning";
   return "normal";
 }
 
 export function CountdownTimer() {
-  const [minutes, setMinutes] = useState("5");
-  const [seconds, setSeconds] = useState("0");
-  const [remainingMs, setRemainingMs] = useState(300_000);
+  const [minutes, setMinutes] = useState("1");
+  const [seconds, setSeconds] = useState("30");
+  const [remainingMs, setRemainingMs] = useState(90_000);
+  const [pais, setPais] = useState<(typeof delegaciones)[number] | "">("");
   const [running, setRunning] = useState(false);
   const [started, setStarted] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -43,6 +45,7 @@ export function CountdownTimer() {
 
   const configuredSeconds = Math.max(0, Number(minutes) || 0) * 60 + Math.max(0, Number(seconds) || 0);
   const phase = getPhase(remainingMs, started);
+  const bandera = pais ? `/flags/flag-${banderasDelegaciones[pais]}.svg` : null;
 
   useEffect(() => { soundRef.current = soundEnabled; }, [soundEnabled]);
   useEffect(() => {
@@ -78,8 +81,8 @@ export function CountdownTimer() {
       remainingRef.current = left;
       setRemainingMs(left);
       if (wholeSecond !== previous) {
-        if (previous > 120 && wholeSecond <= 120) playTone(660, 0.22);
-        if (previous > 60 && wholeSecond <= 60) {
+        if (previous > 60 && wholeSecond <= 60) playTone(660, 0.22);
+        if (previous > 30 && wholeSecond <= 30) {
           playTone(780, 0.18);
           playTone(780, 0.18, 0.25);
         }
@@ -193,19 +196,20 @@ export function CountdownTimer() {
           <label>Segundos<input type="number" min="0" max="59" inputMode="numeric" value={seconds} disabled={running} onChange={(event) => changePart("seconds", event.target.value)} /></label>
         </div>
         <div className="timer-presets" aria-label="Duraciones rápidas">{presets.map((preset) => <button key={preset.seconds} type="button" disabled={running} onClick={() => setDuration(preset.seconds)}>{preset.label}</button>)}</div>
+        <label className="timer-country">Delegación que está hablando<select value={pais} onChange={(event) => setPais(event.target.value as (typeof delegaciones)[number] | "")}><option value="">Ninguna</option>{delegaciones.map((nombre) => <option key={nombre} value={nombre}>{nombre}</option>)}</select></label>
         <div className="timer-main-actions">
           <button className="timer-primary" type="button" onClick={() => void startPause()}>{running ? "Pausar" : started && remainingMs > 0 ? "Continuar" : "Iniciar"}</button>
           <button className="timer-secondary" type="button" onClick={reset}>Reiniciar</button>
         </div>
         <label className="timer-sound"><input type="checkbox" checked={soundEnabled} onChange={(event) => setSoundEnabled(event.target.checked)} /><span>Sonidos de aviso</span></label>
-        <p className="timer-help">Aviso amarillo a los 2 minutos, rojo al último minuto y señales sonoras al acercarse al final.</p>
+        <p className="timer-help">Aviso amarillo al último minuto, rojo a los 30 segundos y señales sonoras al acercarse al final.</p>
         {notice && <p className="timer-notice" role="status">{notice}</p>}
       </aside>
 
-      <div ref={stageRef} className={`timer-stage timer-stage--${phase}`} aria-label="Pantalla de proyección">
+      <div ref={stageRef} className={`timer-stage timer-stage--${phase}${bandera ? " timer-stage--speaker" : ""}`} aria-label="Pantalla de proyección">
         <div className="timer-stage-top"><Image src="/brand/logo-catamarca-global.webp" alt="Catamarca Global" width={176} height={60} priority /><span>MODELO ONU</span></div>
-        <div className="timer-stage-center"><span className="timer-stage-label">Tiempo restante</span><div className={`timer-clock ${phase === "urgent" ? "timer-clock--urgent" : ""}`} role="timer" aria-live="off">{formatTime(remainingMs)}</div><div className="timer-stage-status" aria-live="polite">{status}</div></div>
-        <div className="timer-stage-actions"><button type="button" onClick={() => void startPause()}>{running ? "Pausar" : started && remainingMs > 0 ? "Continuar" : "Iniciar"}</button><button type="button" onClick={() => void toggleFullscreen()}>{isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}</button></div>
+        <div className="timer-stage-center">{bandera && <div className="timer-speaker"><Image src={bandera} alt={`Bandera de ${pais}`} width={180} height={120} unoptimized /><strong>{pais}</strong></div>}<span className="timer-stage-label">Tiempo restante</span><div className={`timer-clock ${phase === "urgent" ? "timer-clock--urgent" : ""}`} role="timer" aria-live="off">{formatTime(remainingMs)}</div><div className="timer-stage-status" aria-live="polite">{status}</div></div>
+        <div className="timer-stage-actions"><button type="button" onClick={() => void startPause()}>{running ? "Pausar" : started && remainingMs > 0 ? "Continuar" : "Iniciar"}</button><button type="button" onClick={() => void toggleFullscreen()}>{isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}</button><label className="timer-stage-country">Delegación<select value={pais} onChange={(event) => setPais(event.target.value as (typeof delegaciones)[number] | "")}><option value="">Ninguna</option>{delegaciones.map((nombre) => <option key={nombre} value={nombre}>{nombre}</option>)}</select></label></div>
         <div className="timer-stage-progress" aria-hidden="true"><span style={{ width: `${configuredSeconds > 0 ? Math.max(0, Math.min(100, remainingMs / (configuredSeconds * 1000) * 100)) : 0}%` }} /></div>
       </div>
     </div>
