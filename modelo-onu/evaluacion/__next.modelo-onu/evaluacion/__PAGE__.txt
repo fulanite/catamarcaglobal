@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[97367,["/_next/static/chunks/0_4bsf~0axqe6.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"coord-page","children":[["$","meta",null,{"httpEquiv":"refresh","content":"0;url=/modelo-onu/evaluacion/coordinacion/"}],["$","p",null,{"children":["La carga de evaluaciones se realiza desde ",["$","a",null,{"href":"/modelo-onu/evaluacion/coordinacion/","children":"coordinación"}],"."]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"1aq_P0lWSEmhD5nCKPioQ"}
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"coord-page","children":[["$","meta",null,{"httpEquiv":"refresh","content":"0;url=/modelo-onu/evaluacion/coordinacion/"}],["$","p",null,{"children":["La carga de evaluaciones se realiza desde ",["$","a",null,{"href":"/modelo-onu/evaluacion/coordinacion/","children":"coordinación"}],"."]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"_jy69wcSK6-5e_H3dE-Px"}
 4:null
