@@ -22,14 +22,14 @@ function getPhase(ms: number, started: boolean): Phase {
   if (!started) return "ready";
   if (ms <= 0) return "done";
   if (ms <= 30_000) return "urgent";
-  if (ms <= 60_000) return "warning";
+  if (ms <= 90_000) return "warning";
   return "normal";
 }
 
 export function CountdownTimer() {
-  const [minutes, setMinutes] = useState("1");
-  const [seconds, setSeconds] = useState("30");
-  const [remainingMs, setRemainingMs] = useState(90_000);
+  const [minutes, setMinutes] = useState("3");
+  const [seconds, setSeconds] = useState("0");
+  const [remainingMs, setRemainingMs] = useState(180_000);
   const [pais, setPais] = useState<(typeof delegaciones)[number] | "">("");
   const [running, setRunning] = useState(false);
   const [started, setStarted] = useState(false);
@@ -81,7 +81,7 @@ export function CountdownTimer() {
       remainingRef.current = left;
       setRemainingMs(left);
       if (wholeSecond !== previous) {
-        if (previous > 60 && wholeSecond <= 60) playTone(660, 0.22);
+        if (previous > 90 && wholeSecond <= 90) playTone(660, 0.22);
         if (previous > 30 && wholeSecond <= 30) {
           playTone(780, 0.18);
           playTone(780, 0.18, 0.25);
@@ -202,7 +202,7 @@ export function CountdownTimer() {
           <button className="timer-secondary" type="button" onClick={reset}>Reiniciar</button>
         </div>
         <label className="timer-sound"><input type="checkbox" checked={soundEnabled} onChange={(event) => setSoundEnabled(event.target.checked)} /><span>Sonidos de aviso</span></label>
-        <p className="timer-help">Aviso amarillo al último minuto, rojo a los 30 segundos y señales sonoras al acercarse al final.</p>
+        <p className="timer-help">Aviso amarillo al llegar a 1:30, rojo a los 30 segundos y señales sonoras al acercarse al final.</p>
         {notice && <p className="timer-notice" role="status">{notice}</p>}
       </aside>
 
