@@ -70,6 +70,10 @@ export function CoordinacionEvaluaciones() {
   const [claveHistorial, setClaveHistorial] = useState("");
   const [fraseHistorial, setFraseHistorial] = useState("");
   const [historialError, setHistorialError] = useState("");
+  const [vaciandoActuales, setVaciandoActuales] = useState(false);
+  const [claveActuales, setClaveActuales] = useState("");
+  const [fraseActuales, setFraseActuales] = useState("");
+  const [actualesError, setActualesError] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -134,6 +138,9 @@ export function CoordinacionEvaluaciones() {
       setPurgandoHistorial(false);
       setClaveHistorial("");
       setFraseHistorial("");
+      setVaciandoActuales(false);
+      setClaveActuales("");
+      setFraseActuales("");
     } catch {
       setMessage("No se pudo cerrar la sesión. Probá nuevamente.");
     }
@@ -207,6 +214,9 @@ export function CoordinacionEvaluaciones() {
       setCerrando(false);
       setConfirmado(false);
       setPurgandoHistorial(false);
+      setVaciandoActuales(false);
+      setClaveActuales("");
+      setFraseActuales("");
       await load();
       setMessage(`${data.archivadas ?? fichas.length} fichas pasaron al historial. La nueva instancia está lista.`);
     } catch { setMessage("No se pudo conectar con el servidor."); }
@@ -227,6 +237,25 @@ export function CoordinacionEvaluaciones() {
       await load();
       setMessage(`Se eliminaron ${data.eliminadas ?? historial.length} fichas del historial. La instancia activa sigue disponible.`);
     } catch { setHistorialError("No se pudo conectar con el servidor."); }
+    finally { setBusy(false); }
+  }
+
+  async function eliminarEvaluacionesActuales(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!instancia || !fichas.length || !claveActuales || fraseActuales !== "ELIMINAR EVALUACIONES" || busy) return;
+    setBusy(true);
+    setActualesError("");
+    try {
+      const { status, data } = await request("POST", { action: "eliminar_evaluaciones_actuales", password: claveActuales, instancia: instancia.instancia, cantidad: fichas.length, confirmacion: fraseActuales });
+      if (status !== 200 || data.ok !== true) { setActualesError(data.error || "No se pudieron eliminar las fichas actuales."); return; }
+      setClaveActuales("");
+      setFraseActuales("");
+      setVaciandoActuales(false);
+      setBorrador(nuevoBorrador());
+      setFormularioAbierto(false);
+      await load();
+      setMessage(`Se eliminaron ${data.eliminadas ?? fichas.length} fichas de la instancia activa. El historial archivado sigue disponible.`);
+    } catch { setActualesError("No se pudo conectar con el servidor."); }
     finally { setBusy(false); }
   }
 
@@ -297,7 +326,8 @@ export function CoordinacionEvaluaciones() {
           <div className="coord-entry-actions"><button className="coord-primary" type="submit" disabled={busy}>{busy ? "Guardando…" : borrador.id ? "Guardar cambios" : "Guardar resultado"}</button><button className="coord-text" type="button" onClick={() => { setBorrador(nuevoBorrador()); setFormularioAbierto(false); setFormError(""); }}>Cancelar</button></div>
         </form>}
       </section>
-      <section className="coord-panel"><div className="coord-toolbar"><div><h2>Planillas cargadas</h2><p>{visible.length} de {fichas.length} fichas visibles</p></div><div className="coord-toolbar-actions"><button className="coord-secondary" type="button" onClick={() => void load()}>Actualizar</button><button className="coord-secondary" type="button" onClick={() => exportCsv(fichas, "evaluaciones-modelo-onu")} disabled={!fichas.length}>Descargar CSV</button><button className="coord-text" type="button" onClick={() => void logout()}>Salir</button></div></div>{message && <p className="coord-notice" role="status">{message}</p>}
+      <section className="coord-panel"><div className="coord-toolbar"><div><h2>Planillas cargadas</h2><p>{visible.length} de {fichas.length} fichas visibles</p></div><div className="coord-toolbar-actions"><button className="coord-secondary" type="button" onClick={() => void load()}>Actualizar</button><button className="coord-secondary" type="button" onClick={() => exportCsv(fichas, "evaluaciones-modelo-onu")} disabled={!fichas.length}>Descargar CSV</button><button className="coord-danger-outline" type="button" onClick={() => { setVaciandoActuales(true); setActualesError(""); }} disabled={!fichas.length || busy}>Eliminar fichas activas</button><button className="coord-text" type="button" onClick={() => void logout()}>Salir</button></div></div>{message && <p className="coord-notice" role="status">{message}</p>}
+        {vaciandoActuales && fichas.length > 0 && <form className="coord-purge coord-close-form" onSubmit={(event) => void eliminarEvaluacionesActuales(event)}><h3>Eliminar fichas de la instancia activa</h3><p>Se borrará{fichas.length === 1 ? "" : "n"} definitivamente {fichas.length} ficha{fichas.length === 1 ? "" : "s"} de la instancia activa. Esto incluye las evaluaciones cargadas con el formulario anterior del jurado. El tablero quedará vacío. El historial archivado no se modificará. Esta acción no se puede deshacer.</p><label>Escribí ELIMINAR EVALUACIONES<input value={fraseActuales} autoComplete="off" onChange={(event) => setFraseActuales(event.target.value)} required /></label><label>Clave de coordinación<input type="password" autoComplete="current-password" value={claveActuales} onChange={(event) => setClaveActuales(event.target.value)} required /></label>{actualesError && <p className="coord-error" role="alert">{actualesError}</p>}<div className="coord-close-actions"><button className="coord-danger" type="submit" disabled={busy || fraseActuales !== "ELIMINAR EVALUACIONES" || !claveActuales}>{busy ? "Eliminando…" : "Eliminar fichas definitivamente"}</button><button className="coord-text" type="button" onClick={() => { setVaciandoActuales(false); setClaveActuales(""); setFraseActuales(""); setActualesError(""); }}>Cancelar</button></div></form>}
         <div className="coord-filters"><label>Buscar<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Jurado, comisión o delegación" /></label><label>Estado<select value={estado} onChange={(event) => setEstado(event.target.value)}><option value="todos">Todos</option><option value="final">Finalizadas</option><option value="borrador">Borradores</option></select></label></div>
         {visible.length ? <div className="coord-list">{visible.map((ficha) => <FichaItem ficha={ficha} key={ficha.id} onEdit={editarFicha} onDelete={(item) => void eliminarFicha(item)} />)}</div> : <p className="coord-empty">No hay fichas que coincidan con los filtros.</p>}
       </section>
