@@ -11,7 +11,7 @@ type HistorialFicha = Ficha & { instancia: string; instancia_nombre: string; arc
 type Instancia = { instancia: string; nombre: string; iniciada: string };
 type Borrador = { id: string | null; jurado: string; fecha: string; comision: string; delegacion: string; puntajes: Puntajes; fortaleza: string; observacion: string; candidata: boolean | null };
 
-type ApiResponse = { ok?: boolean; fichas?: Ficha[]; historial?: HistorialFicha[]; instancia?: Instancia; archivadas?: number; id?: string; error?: string };
+type ApiResponse = { ok?: boolean; fichas?: Ficha[]; historial?: HistorialFicha[]; instancia?: Instancia; archivadas?: number; eliminadas?: number; id?: string; error?: string };
 const endpoint = "/api/evaluaciones-admin.php";
 const formatter = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 });
 const niveles = ["Inicial", "En desarrollo", "Logrado", "Destacado"];
@@ -66,6 +66,10 @@ export function CoordinacionEvaluaciones() {
   const [formularioAbierto, setFormularioAbierto] = useState(false);
   const [formError, setFormError] = useState("");
   const [actaBusy, setActaBusy] = useState(false);
+  const [purgandoHistorial, setPurgandoHistorial] = useState(false);
+  const [claveHistorial, setClaveHistorial] = useState("");
+  const [fraseHistorial, setFraseHistorial] = useState("");
+  const [historialError, setHistorialError] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -127,6 +131,9 @@ export function CoordinacionEvaluaciones() {
       setClaveActual("");
       setClaveNueva("");
       setClaveConfirmacion("");
+      setPurgandoHistorial(false);
+      setClaveHistorial("");
+      setFraseHistorial("");
     } catch {
       setMessage("No se pudo cerrar la sesión. Probá nuevamente.");
     }
@@ -199,9 +206,27 @@ export function CoordinacionEvaluaciones() {
       setClaveCierre("");
       setCerrando(false);
       setConfirmado(false);
+      setPurgandoHistorial(false);
       await load();
       setMessage(`${data.archivadas ?? fichas.length} fichas pasaron al historial. La nueva instancia está lista.`);
     } catch { setMessage("No se pudo conectar con el servidor."); }
+    finally { setBusy(false); }
+  }
+
+  async function eliminarHistorial(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!instancia || !historial.length || !claveHistorial || fraseHistorial !== "ELIMINAR HISTORIAL" || busy) return;
+    setBusy(true);
+    setHistorialError("");
+    try {
+      const { status, data } = await request("POST", { action: "eliminar_historial", password: claveHistorial, instancia: instancia.instancia, cantidad: historial.length, confirmacion: fraseHistorial });
+      if (status !== 200 || data.ok !== true) { setHistorialError(data.error || "No se pudo eliminar el historial."); return; }
+      setClaveHistorial("");
+      setFraseHistorial("");
+      setPurgandoHistorial(false);
+      await load();
+      setMessage(`Se eliminaron ${data.eliminadas ?? historial.length} fichas del historial. La instancia activa sigue disponible.`);
+    } catch { setHistorialError("No se pudo conectar con el servidor."); }
     finally { setBusy(false); }
   }
 
@@ -279,7 +304,8 @@ export function CoordinacionEvaluaciones() {
       <section className="coord-panel coord-cycle"><h2>Cerrar esta instancia</h2><p>Las {fichas.length} fichas actuales pasarán al historial y comenzará una instancia nueva. Podrás volver a descargar el acta de la instancia cerrada.</p>
         {!cerrando ? <button className="coord-secondary" type="button" onClick={() => { setNombreArchivo(instancia?.nombre || "Demostración"); setNombreNueva("Evaluación del Modelo ONU"); setCerrando(true); setMessage(""); }}>Cerrar y empezar otra</button> : <form className="coord-close-form" onSubmit={(event) => void cerrarInstancia(event)}><label>Nombre de esta instancia en el historial<input value={nombreArchivo} maxLength={120} onChange={(event) => setNombreArchivo(event.target.value)} required /></label><label>Nombre de la nueva instancia<input value={nombreNueva} maxLength={120} onChange={(event) => setNombreNueva(event.target.value)} required /></label><label>Confirmá con la clave de coordinación<input type="password" autoComplete="current-password" value={claveCierre} onChange={(event) => setClaveCierre(event.target.value)} required /></label><label className="coord-check"><input type="checkbox" checked={confirmado} onChange={(event) => setConfirmado(event.target.checked)} required /><span>Confirmo que quiero archivar {fichas.length} fichas y comenzar de cero.</span></label><div className="coord-close-actions"><button className="coord-primary" type="submit" disabled={busy || !confirmado}>{busy ? "Archivando…" : "Archivar y empezar"}</button><button className="coord-text" type="button" onClick={() => { setCerrando(false); setClaveCierre(""); setMessage(""); }}>Cancelar</button></div></form>}
       </section>
-      <section className="coord-panel coord-history"><div className="coord-toolbar"><div><h2>Historial de instancias</h2><p>{historial.length} fichas archivadas</p></div><button className="coord-secondary" type="button" onClick={() => exportCsv(historial, "historial-modelo-onu", true)} disabled={!historial.length}>Descargar historial CSV</button></div>
+      <section className="coord-panel coord-history"><div className="coord-toolbar"><div><h2>Historial de instancias</h2><p>{historial.length} ficha{historial.length === 1 ? "" : "s"} archivada{historial.length === 1 ? "" : "s"} en {gruposHistorial.length} instancia{gruposHistorial.length === 1 ? "" : "s"}</p></div><div className="coord-toolbar-actions"><button className="coord-secondary" type="button" onClick={() => exportCsv(historial, "historial-modelo-onu", true)} disabled={!historial.length}>Descargar historial CSV</button><button className="coord-danger-outline" type="button" onClick={() => { setPurgandoHistorial(true); setHistorialError(""); }} disabled={!historial.length || busy}>Eliminar todo el historial</button></div></div>
+        {purgandoHistorial && historial.length > 0 && <form className="coord-purge coord-close-form" onSubmit={(event) => void eliminarHistorial(event)}><h3>Eliminar historial archivado</h3><p>Se borrará{historial.length === 1 ? "" : "n"} definitivamente {historial.length} ficha{historial.length === 1 ? "" : "s"} de {gruposHistorial.length} instancia{gruposHistorial.length === 1 ? "" : "s"}. La instancia activa y sus fichas no se modificarán. Esta acción no se puede deshacer.</p><label>Escribí ELIMINAR HISTORIAL<input value={fraseHistorial} autoComplete="off" onChange={(event) => setFraseHistorial(event.target.value)} required /></label><label>Clave de coordinación<input type="password" autoComplete="current-password" value={claveHistorial} onChange={(event) => setClaveHistorial(event.target.value)} required /></label>{historialError && <p className="coord-error" role="alert">{historialError}</p>}<div className="coord-close-actions"><button className="coord-danger" type="submit" disabled={busy || fraseHistorial !== "ELIMINAR HISTORIAL" || !claveHistorial}>{busy ? "Eliminando…" : "Eliminar definitivamente"}</button><button className="coord-text" type="button" onClick={() => { setPurgandoHistorial(false); setClaveHistorial(""); setFraseHistorial(""); setHistorialError(""); }}>Cancelar</button></div></form>}
         {gruposHistorial.length ? <div className="coord-history-groups">{gruposHistorial.map((grupo) => <details key={grupo.clave} className="coord-history-group"><summary><strong>{grupo.titulo}</strong><span>{grupo.fichas.length} ficha{grupo.fichas.length === 1 ? "" : "s"}</span></summary><div className="coord-history-body"><button className="coord-secondary" type="button" onClick={() => void generarActa(grupo.titulo, grupo.iniciada, grupo.fichas)} disabled={actaBusy}>Descargar acta PDF</button><div className="coord-list">{grupo.fichas.map((ficha) => <FichaItem ficha={ficha} key={`${ficha.instancia}-${ficha.id}`} />)}</div></div></details>)}</div> : <p className="coord-empty">Todavía no hay instancias archivadas.</p>}
       </section>
       <section className="coord-panel coord-cycle"><h2>Clave de coordinación</h2><p>Podés usar una frase que recuerdes fácilmente. Debe tener al menos 16 caracteres; las palabras y los espacios cuentan.</p>

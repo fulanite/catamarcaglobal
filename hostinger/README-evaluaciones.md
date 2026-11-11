@@ -17,4 +17,5 @@ La carga y el tablero se encuentran en `/modelo-onu/evaluacion/coordinacion/`. S
 - El PDF es **preliminar** mientras falte alguna de las cuatro evaluaciones por delegación y se llama **acta final** cuando estén completas las 19 delegaciones. Se puede volver a descargar desde el historial de la instancia.
 - Las fichas se pueden corregir o eliminar desde el listado. Una combinación de jurado y delegación no admite dos fichas nuevas dentro de la misma instancia.
 - **Cerrar y empezar otra** mueve las fichas actuales al historial y crea una instancia vacía. Solicita nuevamente la clave de coordinación. Descargar el PDF y respaldar la base antes de cerrar la instancia real.
+- **Eliminar todo el historial** borra únicamente las fichas de instancias archivadas. Exige escribir `ELIMINAR HISTORIAL` y volver a ingresar la clave de coordinación; el servidor comprueba que la cantidad de fichas no haya cambiado. La instancia activa y sus fichas permanecen intactas. Descargar el CSV o respaldar la base antes si se necesita conservarlas.
 - **Cambiar clave** guarda únicamente el hash en `cata-evaluacion-admin.hash`, junto al archivo de configuración y fuera de `public_html`.

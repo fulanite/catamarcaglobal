@@ -239,6 +239,47 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             responder(500, ['error' => 'No se pudo cerrar la instancia. Las fichas permanecen activas.']);
         }
     }
+    if ($action === 'eliminar_historial') {
+        if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
+        $password = $data['password'] ?? null;
+        if (!is_string($password) || !password_verify($password, $adminHash)) {
+            usleep(350000);
+            responder(401, ['error' => 'La clave de coordinación no coincide.']);
+        }
+        $instancia = $data['instancia'] ?? null;
+        $cantidad = $data['cantidad'] ?? null;
+        if (!is_string($instancia) || !preg_match('/^[0-9a-fA-F-]{36}$/', $instancia)
+            || !is_int($cantidad) || $cantidad < 1
+            || ($data['confirmacion'] ?? null) !== 'ELIMINAR HISTORIAL') {
+            responder(400, ['error' => 'Revisá la confirmación y actualizá el historial antes de continuar.']);
+        }
+        try {
+            $db = $config['db'];
+            $pdo = new PDO(
+                'mysql:host=' . $db['host'] . ';port=' . (int)($db['port'] ?? 3306) . ';dbname=' . $db['name'] . ';charset=utf8mb4',
+                $db['user'], $db['password'],
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false]
+            );
+            $pdo->beginTransaction();
+            $actual = $pdo->query('SELECT instancia FROM evaluacion_control WHERE id = 1 FOR UPDATE')->fetchColumn();
+            if ($actual === false || !hash_equals((string)$actual, $instancia)) {
+                $pdo->rollBack();
+                responder(409, ['error' => 'La instancia activa cambió. Actualizá antes de continuar.']);
+            }
+            $archivadas = (int)$pdo->query('SELECT COUNT(*) FROM evaluaciones_historial')->fetchColumn();
+            if ($archivadas !== $cantidad) {
+                $pdo->rollBack();
+                responder(409, ['error' => 'Cambió el historial. Actualizá antes de continuar.']);
+            }
+            $pdo->exec('DELETE FROM evaluaciones_historial');
+            $pdo->commit();
+            responder(200, ['ok' => true, 'eliminadas' => $archivadas]);
+        } catch (Throwable $error) {
+            if (isset($pdo) && $pdo->inTransaction()) $pdo->rollBack();
+            error_log('Eliminar historial Modelo ONU: ' . $error->getMessage());
+            responder(500, ['error' => 'No se pudo eliminar el historial. Probá nuevamente.']);
+        }
+    }
     if ($action !== 'login') responder(400, ['error' => 'Acción inválida.']);
     $password = $data['password'] ?? null;
     if (!is_string($password) || $password === '' || strlen($password) > 512) {
