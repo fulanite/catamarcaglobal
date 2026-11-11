@@ -12,6 +12,11 @@ function responder(int $status, array $data): never {
     exit;
 }
 
+function nuevoId(): string {
+    $raw = bin2hex(random_bytes(16));
+    return substr($raw, 0, 8) . '-' . substr($raw, 8, 4) . '-' . substr($raw, 12, 4) . '-' . substr($raw, 16, 4) . '-' . substr($raw, 20, 12);
+}
+
 function mismoOrigen(): bool {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
     if ($origin === '') return true;
@@ -57,7 +62,7 @@ function autorizado(): bool {
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
-    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 2048) responder(413, ['error' => 'Solicitud demasiado extensa.']);
+    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 16000) responder(413, ['error' => 'Solicitud demasiado extensa.']);
     $data = json_decode(file_get_contents('php://input') ?: '', true);
     if (!is_array($data)) responder(400, ['error' => 'Solicitud inválida.']);
     $action = $data['action'] ?? '';
@@ -99,6 +104,93 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             responder(500, ['error' => 'No se pudo cambiar la clave. La anterior sigue vigente.']);
         }
     }
+    if ($action === 'guardar_ficha' || $action === 'eliminar_ficha') {
+        if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
+        $instancia = $data['instancia'] ?? null;
+        if (!is_string($instancia) || !preg_match('/^[0-9a-fA-F-]{36}$/', $instancia)) responder(400, ['error' => 'Instancia inválida.']);
+        $id = $data['id'] ?? null;
+        if ($id !== null && (!is_string($id) || !preg_match('/^[0-9a-fA-F-]{36}$/', $id))) responder(400, ['error' => 'Ficha inválida.']);
+        if ($action === 'eliminar_ficha' && $id === null) responder(400, ['error' => 'Ficha inválida.']);
+        if ($action === 'guardar_ficha') {
+            $jurado = $data['jurado'] ?? null;
+            $delegacion = $data['delegacion'] ?? null;
+            $comision = $data['comision'] ?? null;
+            $fecha = $data['fecha'] ?? null;
+            $jurados = ['Carmen', 'Eugenia', 'Ana Laura', 'Marina'];
+            $delegaciones = ['Afganistán','Alemania','Argentina','Brasil','Canadá','Colombia','España','Estados Unidos','Francia','Italia','Jordania','Marruecos','México','Rusia','Siria','Sudán','Turquía','Ucrania','Venezuela'];
+            if (!is_string($jurado) || !in_array($jurado, $jurados, true)
+                || !is_string($delegacion) || !in_array($delegacion, $delegaciones, true)) responder(400, ['error' => 'Seleccioná un jurado y una delegación válidos.']);
+            if (!is_string($comision) || trim($comision) === '' || mb_strlen($comision) > 120) responder(400, ['error' => 'Ingresá la comisión.']);
+            $fechaObj = is_string($fecha) ? DateTimeImmutable::createFromFormat('!Y-m-d', $fecha) : false;
+            if (!$fechaObj || $fechaObj->format('Y-m-d') !== $fecha) responder(400, ['error' => 'Fecha inválida.']);
+            $fortaleza = $data['fortaleza'] ?? '';
+            $observacion = $data['observacion'] ?? '';
+            if (!is_string($fortaleza) || mb_strlen($fortaleza) > 1000 || !is_string($observacion) || mb_strlen($observacion) > 2000) responder(400, ['error' => 'Las observaciones son demasiado largas.']);
+            $candidata = $data['candidata'] ?? null;
+            if ($candidata !== null && !is_bool($candidata)) responder(400, ['error' => 'Candidatura inválida.']);
+            $pesos = ['negociacion'=>18,'preparacion'=>14,'representacion'=>14,'argumentacion'=>14,'comunicacion'=>10,'procedimiento'=>10,'equipo'=>9,'resolucion'=>5,'vestimenta'=>3,'redactora'=>3];
+            $puntajes = $data['puntajes'] ?? null;
+            if (!is_array($puntajes) || count($puntajes) !== count($pesos) || array_diff(array_keys($puntajes), array_keys($pesos))) responder(400, ['error' => 'Completá los diez criterios.']);
+            $total = 0.0;
+            foreach ($pesos as $criterio => $peso) {
+                $valor = $puntajes[$criterio] ?? null;
+                if (!is_int($valor) || $valor < 1 || $valor > 4) responder(400, ['error' => 'Puntaje inválido.']);
+                $total += $valor * $peso / 4;
+            }
+        }
+        try {
+            $db = $config['db'];
+            $pdo = new PDO(
+                'mysql:host=' . $db['host'] . ';port=' . (int)($db['port'] ?? 3306) . ';dbname=' . $db['name'] . ';charset=utf8mb4',
+                $db['user'], $db['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES => false]
+            );
+            $pdo->beginTransaction();
+            $actual = $pdo->query('SELECT instancia FROM evaluacion_control WHERE id = 1 FOR UPDATE')->fetchColumn();
+            if ($actual === false || !hash_equals((string)$actual, $instancia)) {
+                $pdo->rollBack();
+                responder(409, ['error' => 'La instancia cambió. Actualizá la página antes de continuar.']);
+            }
+            if ($action === 'eliminar_ficha') {
+                $stmt = $pdo->prepare('DELETE FROM evaluaciones WHERE id = ?');
+                $stmt->execute([$id]);
+                if ($stmt->rowCount() !== 1) {
+                    $pdo->rollBack();
+                    responder(404, ['error' => 'La ficha ya no existe.']);
+                }
+            } else {
+                $duplicado = $pdo->prepare('SELECT id FROM evaluaciones WHERE jurado = ? AND delegacion = ? AND id <> ? LIMIT 1');
+                $duplicado->execute([$jurado, $delegacion, $id ?? '']);
+                if ($duplicado->fetchColumn() !== false) {
+                    $pdo->rollBack();
+                    responder(409, ['error' => 'Ya existe una ficha de ese jurado para esa delegación. Editá la ficha existente.']);
+                }
+                $valores = [$jurado, $fecha, trim($comision), $delegacion, json_encode($puntajes, JSON_THROW_ON_ERROR), round($total, 2), trim($fortaleza), trim($observacion), $candidata === null ? null : (int)$candidata];
+                if ($id === null) {
+                    $id = nuevoId();
+                    $tokenHash = hash('sha256', random_bytes(32));
+                    $stmt = $pdo->prepare("INSERT INTO evaluaciones (id,token_hash,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado) VALUES (?,?,?,?,?,?,?,?,?,?,?,'final')");
+                    $stmt->execute(array_merge([$id, $tokenHash], $valores));
+                } else {
+                    $stmt = $pdo->prepare("UPDATE evaluaciones SET jurado=?,fecha=?,comision=?,delegacion=?,puntajes=?,puntaje=?,fortaleza=?,observacion=?,candidata=?,estado='final' WHERE id=?");
+                    $stmt->execute(array_merge($valores, [$id]));
+                    if ($stmt->rowCount() === 0) {
+                        $exists = $pdo->prepare('SELECT id FROM evaluaciones WHERE id = ?');
+                        $exists->execute([$id]);
+                        if ($exists->fetchColumn() === false) {
+                            $pdo->rollBack();
+                            responder(404, ['error' => 'La ficha ya no existe.']);
+                        }
+                    }
+                }
+            }
+            $pdo->commit();
+            responder(200, ['ok' => true, 'id' => $id]);
+        } catch (Throwable $error) {
+            if (isset($pdo) && $pdo->inTransaction()) $pdo->rollBack();
+            error_log('Carga coordinación Modelo ONU: ' . $error->getMessage());
+            responder(500, ['error' => 'No se pudo guardar el cambio. Probá nuevamente.']);
+        }
+    }
     if ($action === 'cerrar_instancia') {
         if (!autorizado()) responder(401, ['error' => 'Volvé a ingresar a coordinación.']);
         $password = $data['password'] ?? null;
@@ -136,7 +228,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             $archivar = $pdo->prepare('INSERT INTO evaluaciones_historial (instancia,instancia_nombre,id,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado,creado,actualizado) SELECT ?,?,id,jurado,fecha,comision,delegacion,puntajes,puntaje,fortaleza,observacion,candidata,estado,creado,actualizado FROM evaluaciones');
             $archivar->execute([$esperada, trim($nombreArchivo)]);
             $pdo->exec('DELETE FROM evaluaciones');
-            $nueva = sprintf('%s-%s-4%s-8%s-%s', bin2hex(random_bytes(4)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)), bin2hex(random_bytes(2)), bin2hex(random_bytes(6)));
+            $nueva = nuevoId();
             $cambiar = $pdo->prepare('UPDATE evaluacion_control SET instancia = ?, nombre = ?, iniciada = CURRENT_TIMESTAMP WHERE id = 1');
             $cambiar->execute([$nueva, trim($nombreNueva)]);
             $pdo->commit();

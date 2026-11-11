@@ -17,6 +17,7 @@ export const delegaciones = [
   "Rusia",
   "Siria",
   "Sudán",
+  "Turquía",
   "Ucrania",
   "Venezuela",
 ] as const;
@@ -38,6 +39,7 @@ export const banderasDelegaciones: Record<(typeof delegaciones)[number], string>
   "Rusia": "ru",
   "Siria": "sy",
   "Sudán": "sd",
+  "Turquía": "tr",
   "Ucrania": "ua",
   "Venezuela": "ve",
 };
